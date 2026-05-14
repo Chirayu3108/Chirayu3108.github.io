@@ -1,0 +1,193 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "GondensDemo";
+  src: url(fonts/gondens-demo/GondensDEMO.otf);
+}
+
+@font-face {
+  font-family: "RetroFloral";
+  src: url(fonts/gondens-demo/retro-floral/RetroFloral.otf);
+}
+
+
+
+/* BODY */
+body {
+    
+    background-color: #bdbdbd;
+    color: black;
+    
+}
+
+/* NAVBAR */
+nav {
+    background-color: #8c8989;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 20px 40px 10px;
+}
+
+/* LOGO */
+.logo {
+    
+    display: flex;
+    margin-top: -10px;
+    
+}
+
+.logo img {
+    width: auto;
+    height: 70px;
+}
+
+/* NAV LINKS */
+.nav-links {
+  
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: space-around;
+    gap: 30px;
+}
+
+.nav-links a {
+    font-family: "bebas neue", sans-serif;
+    text-decoration: none;
+    color: #bdbdbd;
+    position: relative;
+    font-size: 20px;
+    letter-spacing: 0.07em;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:after{
+  content: "";
+  position: absolute;
+  background-color: #bdbdbd;
+  height: 2px;
+  width: 0;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  left: 0;
+  bottom: -4px;
+  
+}
+
+.nav-links a:hover {
+  color: white;
+}
+
+.nav-links a:hover::after {
+  background-color: white;;
+  width: 100%;
+}
+
+/* HERO SECTION */
+.hero {
+    
+    height: 90vh;
+    border-bottom-left-radius: 10%;
+    border-bottom-right-radius: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+    padding: 0 10%;
+}
+
+.hero-content {
+  
+    display: flex;
+   
+    
+    height: 100%;
+    width: 100%;
+}
+
+
+.hero-image{
+  
+    display: flex;
+    justify-content: end;
+  
+}
+
+#profile-pic {
+  
+  align-self: flex-end;
+  margin-left: 100px;
+    width: 700px;
+    max-width: 100%;
+    height: auto;
+}
+
+.hero-text {
+  
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1200px;
+    margin-left: -80px;
+  
+}
+
+
+
+#hey{
+  font-family: "Playfair Display", serif;
+    align-self: flex-start;
+    font-size: 40px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    font-weight: 400;
+    font-style:italic;
+}
+
+.hero-text h1 {
+  font-family: "Bebas Neue", sans-serif;
+    align-items: center;
+    font-size: 130px;
+    margin-bottom: 20px;
+    line-height: 0.8;
+}
+
+/* ABOUT SECTION */
+.about{
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 30%;
+  color:white;
+}
+
+.about-content {
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px;
+}
+
+.about-title {
+  
+  display: flex;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  color: white;
+  font-size: 80px;
+  padding-bottom: 2%;
+
+
+}
+
+
