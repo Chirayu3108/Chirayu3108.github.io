@@ -2,86 +2,430 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- this is for responsive design -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- CSS -->
-  <link rel = "stylesheet" href = "style.css">
-  <!-- Google Font -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Fonts — single request for all three fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-  <!--Google Font PlayFair Display-->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-  <!-- Font Bebas Neue -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-  <!-- Font Roboto-->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <title>Chirayu's Portfolio</title>
 </head>
 <body>
   <header>
-    <nav >
-      <div class = "logo">
-      <img src = "images/LogoImage.png" alt = "Logo">
+    <nav>
+      <div class="logo">
+        <a href = "#home">
+        <img src="images/LogoImage.png" alt="Logo">
+        </a>
       </div>
-    <ul class = "nav-links">
-      <li><a href = "#">HOME</a></li>
-      <li><a href = "#">ABOUT</a></li>
-      <li><a href = "#">PROJECTS</a></li>
-      <li><a href = "#">EXPERIENCE</a></li>
-      <li><a href = "#">CONTACT</a></li>
-    </ul>
+      <ul class="nav-links">
+        <li><a href="#home">HOME</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="#projects">PROJECTS</a></li>
+        <li><a href="#experience">EXPERIENCE</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
     </nav>
   </header>
 
-  <section class = "hero">
-    <div class = "hero-content">
+  <section class="hero" id="home">
+    <div class="hero-content">
+
       <!-- Hero Text -->
-      <div class = "hero-text">
-        <!-- <h1>I'M CHIRAYU</h1> -->
-        <h2 id = "hey">HEY, I'M CHIRAYU</h2>
-        <h1>A SOFTWARE </h1>
-        <h1 id = "developer">DEVELOPER</h1>
-       
+      <div class="hero-text">
+        <h2 id="hey">HEY, I'M CHIRAYU</h2>
+        <h1>A SOFTWARE</h1>
+        <h1 id="developer">DEVELOPER</h1>
+
+        <!-- CTA Buttons -->
+        <div class="hero-cta">
+          <a href="#projects" class="btn-primary">View My Work</a>
+          <a href="#contact" class="btn-arrow">Get In Touch <span class="btn-arrow-icon">→</span></a>
+        </div>
       </div>
 
-      <div class = "hero-image">
-        <!-- Profile Picture -->
-        <img id="profile-pic" src = images/profile.png alt = "Profile Picture">
+      <!-- Profile Image -->
+      <div class="hero-image">
+        <img id="profile-pic" src="images/profile.png" alt="Profile Picture">
       </div>
-
-      <div class = "semi-circle"></div>
 
     </div>
+
   </section>
 
   <!-- ABOUT SECTION -->
-  <section class = "about">
-    <div class = "about-content">
-    <h1 class = "about-title">About Me</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur efficitur. Sed at ligula a enim efficitur bibendum. Curabitur ac odio a nisl convallis tincidunt. Proin in mi sed nisi efficitur fermentum. Nulla facilisi. Donec ut velit a nunc efficitur efficitur. Sed at ligula a enim efficitur bibendum.</p>
+  <section class="about" id="about">
+    <div class="about-container">
+
+      <!-- Header -->
+      <div class="about-header">
+        <span class="section-eyebrow">Get To Know Me</span>
+        <h1 class="about-title">About Me</h1>
+        <div class="about-divider"></div>
+      </div>
+
+      <!-- Bio -->
+      <div class="about-bio">
+        <p class="bio-intro">Hi, I'm Chirayu, a passionate Computer Science student at the University of British Columbia Okanagan solving real-world problems through technology.</p>
+        <p>I enjoy building projects that challenge me to learn new technologies, from full-stack applications and AI-powered systems to data analytics dashboards. What excites me most about software development is not just writing code, but understanding how technology can improve people's experiences and make complex tasks simpler.</p>
+        <p>When I'm not coding, I enjoy exploring new ideas in business, learning about emerging technologies, and staying active. I also like playing sports and making/editing videos.</p>
+        <p>I believe that the best developers are lifelong learners who understand both technology and the people it serves.</p>
+        <p class="bio-closing">I'm always looking for opportunities to learn, collaborate, and build solutions that create real value.</p>
+      </div>
+
+      <!-- Tech Stack Grid -->
+      <div class="tech-section">
+        <h2 class="section-label">Tech Stack</h2>
+        <div class="tech-grid">
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python">
+            <span>Python</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java">
+            <span>Java</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML">
+            <span>HTML</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS">
+            <span>CSS</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript">
+            <span>JavaScript</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="TypeScript">
+            <span>TypeScript</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React">
+            <span>React</span>
+          </div>
+
+          <div class="tech-card">
+            <div class="tech-icon-fa"><i class="fa-solid fa-database"></i></div>
+            <span>SQL</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI">
+            <span>FastAPI</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker">
+            <span>Docker</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git">
+            <span>Git</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL">
+            <span>PostgreSQL</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/r/r-original.svg" alt="R">
+            <span>R</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg" alt="Streamlit">
+            <span>Streamlit</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt="Pandas">
+            <span>Pandas</span>
+          </div>
+
+          <div class="tech-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg" alt="Firebase">
+            <span>Firebase</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Additional Tools -->
+      <div class="tools-section">
+        <h2 class="section-label">Additional Tools</h2>
+        <div class="tools-box">
+
+          <div class="tool-item">
+            <i class="fab fa-adobe"></i>
+            <span>Adobe Cloud</span>
+          </div>
+
+          <div class="tool-item">
+            <i class="fa-solid fa-film"></i>
+            <span>DaVinci Resolve</span>
+          </div>
+
+          <div class="tool-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" alt="Android Studio">
+            <span>Android Studio</span>
+          </div>
+
+          <div class="tool-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg" alt="Jupyter Notebook">
+            <span>Jupyter Notebook</span>
+          </div>
+
+          <div class="tool-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code">
+            <span>VS Code</span>
+          </div>
+
+          <div class="tool-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="Figma">
+            <span>Figma</span>
+          </div>
+
+          <div class="tool-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/webflow/webflow-original.svg" alt="Webflow">
+            <span>Webflow</span>
+          </div>
+
+          <div class="tool-item">
+            <i class="fa-solid fa-object-group"></i>
+            <span>Balsamiq</span>
+          </div>
+
+          <div class="tool-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/blender/blender-original.svg" alt="Blender">
+            <span>Blender</span>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </section>
 
   <!-- PROJECTS SECTION -->
-  <section class = "projects">
+  <section class="projects" id="projects">
+    <div class="projects-container">
+
+      <div class="about-header">
+        <span class="section-eyebrow">What I've Built</span>
+        <h1 class="about-title">Projects</h1>
+        <div class="about-divider"></div>
+      </div>
+
+      <div class="timeline">
+
+        <!-- Project 1 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h2 class="project-title">Campus Housing Finder</h2>
+                <div class="project-stack">
+                  <span>Java</span><span>Android Studio</span><span>XML</span>
+                  <span>Firebase Auth</span><span>Firestore</span><span>Google Maps API</span>
+                </div>
+              </div>
+              <span class="project-date">Sep – Dec 2025</span>
+            </div>
+            <p class="project-desc">A mobile application built to help university students find off-campus housing more efficiently. The platform allows landlords to post rental listings while students can browse properties, save favorites, and view locations directly on an interactive map. Firebase services provide real-time updates and secure authentication, creating a seamless experience for both renters and property owners.</p>
+            <div class="project-features-label">Key Features</div>
+            <div class="project-features">
+              <span class="feature-tag">Student-Focused Rental Marketplace</span>
+              <span class="feature-tag">Real-Time Property Listings</span>
+              <span class="feature-tag">Google Maps Integration</span>
+              <span class="feature-tag">Favorites & Saved Properties</span>
+              <span class="feature-tag">Role-Based Authentication</span>
+              <span class="feature-tag">Firebase Cloud Database</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h2 class="project-title">Food Delivery Platform</h2>
+                <div class="project-stack">
+                  <span>Python</span><span>FastAPI</span><span>React</span><span>JavaScript</span>
+                  <span>PostgreSQL</span><span>Docker</span><span>Pandas</span><span>CI/CD</span>
+                </div>
+              </div>
+              <span class="project-date">Jan – Apr 2026</span>
+            </div>
+            <p class="project-desc">A full-stack food delivery platform designed to connect customers, restaurants, and administrators through a modern web application. The system includes secure JWT-based authentication, role-based access control, an admin dashboard, and RESTful APIs for efficient data management. Built using a containerized microservices architecture with Docker and automated deployment pipelines. Restaurant data was analysed using Pandas to create interactive dashboards for performance monitoring and business insights.</p>
+            <div class="project-features-label">Key Features</div>
+            <div class="project-features">
+              <span class="feature-tag">JWT Auth & Role-Based Access</span>
+              <span class="feature-tag">Admin Dashboard</span>
+              <span class="feature-tag">RESTful API Architecture</span>
+              <span class="feature-tag">Dockerized Microservices</span>
+              <span class="feature-tag">Data Analytics Dashboard</span>
+              <span class="feature-tag">CI/CD Integration</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h2 class="project-title">AI Study Assistant (RAG)</h2>
+                <div class="project-stack">
+                  <span>Python</span><span>LangChain</span><span>ChromaDB</span>
+                  <span>Streamlit</span><span>Groq</span><span>SentenceTransformers</span><span>Docker</span>
+                </div>
+              </div>
+              <span class="project-date">Jun 2026</span>
+            </div>
+            <p class="project-desc">An AI-powered study assistant that allows students to upload learning materials and ask questions about their documents using natural language. The system uses Retrieval-Augmented Generation (RAG) to retrieve relevant information from uploaded files before generating responses, reducing hallucinations and improving answer accuracy. Supports multiple document formats, provides source citations with every response, and runs locally using vector embeddings stored in ChromaDB.</p>
+            <div class="project-features-label">Key Features</div>
+            <div class="project-features">
+              <span class="feature-tag">Retrieval-Augmented Generation</span>
+              <span class="feature-tag">Multi-Document Q&A</span>
+              <span class="feature-tag">Source Citation Tracking</span>
+              <span class="feature-tag">Local Vector Database</span>
+              <span class="feature-tag">Streamlit Interface</span>
+              <span class="feature-tag">Dockerized Deployment</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </section>
 
   <!-- EXPERIENCE SECTION -->
-  <section class = "experience">
+  <section class="experience" id="experience">
+    <div class="projects-container">
+
+      <div class="about-header">
+        <span class="section-eyebrow">Where I've Worked</span>
+        <h1 class="about-title">Experience</h1>
+        <div class="about-divider"></div>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h2 class="project-title">Web Developer & Layout Designer</h2>
+                <p class="exp-company">The Phoenix News</p>
+                <div class="project-stack">
+                  <span>Webflow</span><span>Adobe InDesign</span>
+                </div>
+              </div>
+              <span class="project-date">Sep 2025 – Apr 2026</span>
+            </div>
+            <p class="project-desc">Worked as part of a fast-paced student newsroom, collaborating with editors and designers to create engaging content for both digital and print publications. My role involved improving website usability, designing page layouts, and ensuring content was presented in a clear and visually appealing way.</p>
+            <p class="project-desc">This experience strengthened my understanding of user experience, design principles, teamwork, and communication while working under tight publication deadlines. It also gave me practical experience balancing technical implementation with the needs of real users and content creators.</p>
+            <div class="project-features-label">Key Contributions</div>
+            <div class="project-features">
+              <span class="feature-tag">Print & Digital Layout Design</span>
+              <span class="feature-tag">Website Content Organisation</span>
+              <span class="feature-tag">Publishing Deadline Management</span>
+              <span class="feature-tag">UI/UX Principles</span>
+              <span class="feature-tag">Cross-Team Collaboration</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </section>
 
   <!-- CONTACT SECTION -->
-  <section class = "contact">
+  <section class="contact" id="contact">
+    <div class="contact-container">
+
+      <div class="about-header">
+        <span class="section-eyebrow">Let's Work Together</span>
+        <h1 class="about-title">Get In Touch</h1>
+        <div class="about-divider"></div>
+      </div>
+
+      <div class="contact-content">
+
+        <!-- Left — Info -->
+        <div class="contact-left">
+          <h2 class="contact-tagline">Open to building<br><span>your next big idea.</span></h2>
+          <p class="contact-text">Whether you have a project in mind, a problem to solve, or just want to connect — I'm always open to collaborating. I enjoy turning ideas into real, working products and would love to help bring yours to life.</p>
+          <div class="contact-info">
+            <a href="mailto:chirayu.ahuja3108@gmail.com" class="contact-link">
+              <i class="fas fa-envelope"></i>
+              <span>chirayu.ahuja3108@gmail.com</span>
+            </a>
+            <a href="https://www.linkedin.com/in/chirayu-ahuja-532078275/" target="_blank" class="contact-link">
+              <i class="fab fa-linkedin-in"></i>
+              <span>linkedin.com/in/chirayu-ahuja</span>
+            </a>
+            <a href="https://github.com/Chirayu3108" target="_blank" class="contact-link">
+              <i class="fab fa-github"></i>
+              <span>github.com/Chirayu3108</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right — Form -->
+        <form class="contact-form" id="contact-form">
+          <div class="form-group">
+            <label for="contact-name">Name</label>
+            <input type="text" id="contact-name" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label for="contact-email">Email</label>
+            <input type="email" id="contact-email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" rows="6" placeholder="Tell me about your project or idea..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary form-submit">Send Message</button>
+        </form>
+
+      </div>
+    </div>
   </section>
 
-  <!--JavaScript-->
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <p class="footer-copy">© 2026 Chirayu Ahuja</p>
+      <div class="footer-icons">
+        <a href="mailto:chirayu.ahuja3108@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/chirayu-ahuja-532078275/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/Chirayu3108" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
