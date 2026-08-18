@@ -3,36 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Chirayu Ahuja — software developer and designer. Computer Science student at UBC Okanagan building full-stack software and the interfaces around it.">
   <link rel="stylesheet" href="style.css">
 
   <!-- Google Fonts — single request for all three fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Inter:wght@700&family=Instrument+Sans:ital,wght@0,500;0,700;1,700&display=swap" rel="stylesheet">
 
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <title>Chirayu's Portfolio</title>
+  <title>Chirayu Ahuja — Software Developer &amp; Designer</title>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="logo">
-        <a href = "#home">
-        <img src="images/LogoImage.png" alt="Logo">
-        </a>
-      </div>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#home">HOME</a></li>
-        <li><a href="#about">ABOUT</a></li>
-        <li><a href="#projects">PROJECTS</a></li>
-        <li><a href="#experience">EXPERIENCE</a></li>
-        <li><a href="#contact">CONTACT</a></li>
-      </ul>
+  <a class="skip-link" href="#home">Skip to content</a>
 
-      <!-- Hamburger (mobile only) -->
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+  <!-- LIQUID GLASS DISTORTION FILTER (used by .hero-line-ghost) -->
+  <svg style="position:absolute; width:0; height:0;" aria-hidden="true">
+    <filter id="glass-distortion">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <span>C</span><span>/</span><span>A</span>
+  </div>
+
+  <!-- CURSOR -->
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"><span></span></div>
+
+  <header id="site-header">
+    <nav>
+      <a href="#home" class="logo">CA</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about" data-nav="about">About</a></li>
+        <li><a href="#experience" data-nav="experience">Work</a></li>
+        <li><a href="#work" data-nav="work">Projects</a></li>
+        <li><a href="#design" data-nav="design">Designs</a></li>
+      </ul>
+      <div class="nav-extra">
+        <a href="https://github.com/Chirayu3108" target="_blank" rel="noopener" class="nav-extra-link">Github</a>
+        <a href="https://www.linkedin.com/in/chirayu-ahuja-532078275/" target="_blank" rel="noopener" class="nav-extra-link">Linkedin</a>
+        <a href="#contact" class="btn-pill">Let's Talk <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -40,368 +58,250 @@
     </nav>
   </header>
 
-  <section class="hero" id="home">
-    <div class="hero-content">
+  <main>
 
-      <!-- Hero Text -->
-      <div class="hero-text">
-        <h2 id="hey">HEY, I'M CHIRAYU</h2>
-        <h1>A SOFTWARE</h1>
-        <h1 id="developer">DEVELOPER</h1>
-
-        <!-- CTA Buttons -->
-        <div class="hero-cta">
-          <a href="#projects" class="btn-primary">View My Work</a>
-          <a href="#contact" class="btn-arrow">Get In Touch <span class="btn-arrow-icon">→</span></a>
-        </div>
+    <!-- HERO -->
+    <section class="hero" id="home" data-nav="home">
+      <div class="hero-inner">
+        <h1 class="hero-title">
+          <span class="hero-line">Software</span>
+          <span class="hero-line">Developer</span>
+          <span class="hero-line">&amp;</span>
+          <span class="hero-line hero-line-ghost">Designer</span>
+        </h1>
       </div>
+      <p class="hero-tagline reveal-line">Building better experience<br>with impeccable logic</p>
+      <a href="#about" class="scroll-cue" aria-label="Scroll to about section">
+        <i class="fas fa-arrow-down"></i>
+      </a>
+    </section>
 
-      <!-- Profile Image -->
-      <div class="hero-image">
-        <img id="profile-pic" src="images/profile.png" alt="Profile Picture">
+    <!-- CODE + DESIGN STATEMENT — pinned horizontal scroll reveal -->
+    <section class="statement" id="statement">
+      <div class="statement-pin">
+        <p class="statement-text">Code + Design = Experience</p>
       </div>
+    </section>
 
-    </div>
-
-  </section>
-
-  <!-- ABOUT SECTION -->
-  <section class="about" id="about">
-    <div class="about-container">
-
-      <!-- Header -->
-      <div class="about-header">
-        <span class="section-eyebrow">Get To Know Me</span>
-        <h1 class="about-title">About Me</h1>
-        <div class="about-divider"></div>
-      </div>
-
-      <!-- Bio -->
-      <div class="about-bio">
-        <p class="bio-intro">Hi, I'm Chirayu, a passionate Computer Science student at the University of British Columbia Okanagan solving real-world problems through technology.</p>
-        <p>I enjoy building projects that challenge me to learn new technologies, from full-stack applications and AI-powered systems to data analytics dashboards. What excites me most about software development is not just writing code, but understanding how technology can improve people's experiences and make complex tasks simpler.</p>
-        <p>When I'm not coding, I enjoy exploring new ideas in business, learning about emerging technologies, and staying active. I also like playing football and tennis, and making/editing videos.</p>
-        <p>I believe that the best developers are lifelong learners who understand both technology and the people it serves.</p>
-        <p class="bio-closing">I'm always looking for opportunities to learn, collaborate, and build solutions that create real value.</p>
-      </div>
-
-      <!-- Tech Stack Grid -->
-      <div class="tech-section">
-        <h2 class="section-label">Tech Stack</h2>
-        <div class="tech-grid">
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python">
-            <span>Python</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java">
-            <span>Java</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML">
-            <span>HTML</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS">
-            <span>CSS</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript">
-            <span>JavaScript</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="TypeScript">
-            <span>TypeScript</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React">
-            <span>React</span>
-          </div>
-
-          <div class="tech-card">
-            <div class="tech-icon-fa"><i class="fa-solid fa-database"></i></div>
-            <span>SQL</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI">
-            <span>FastAPI</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker">
-            <span>Docker</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git">
-            <span>Git</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL">
-            <span>PostgreSQL</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/r/r-original.svg" alt="R">
-            <span>R</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg" alt="Streamlit">
-            <span>Streamlit</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt="Pandas">
-            <span>Pandas</span>
-          </div>
-
-          <div class="tech-card">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg" alt="Firebase">
-            <span>Firebase</span>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Additional Tools -->
-      <div class="tools-section">
-        <h2 class="section-label">Additional Tools</h2>
-        <div class="tools-box">
-
-          <div class="tool-item">
-            <i class="fab fa-adobe"></i>
-            <span>Adobe Cloud</span>
-          </div>
-
-          <div class="tool-item">
-            <i class="fa-solid fa-film"></i>
-            <span>DaVinci Resolve</span>
-          </div>
-
-          <div class="tool-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" alt="Android Studio">
-            <span>Android Studio</span>
-          </div>
-
-          <div class="tool-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg" alt="Jupyter Notebook">
-            <span>Jupyter Notebook</span>
-          </div>
-
-          <div class="tool-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code">
-            <span>VS Code</span>
-          </div>
-
-          <div class="tool-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="Figma">
-            <span>Figma</span>
-          </div>
-
-          <div class="tool-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/webflow/webflow-original.svg" alt="Webflow">
-            <span>Webflow</span>
-          </div>
-
-          <div class="tool-item">
-            <i class="fa-solid fa-object-group"></i>
-            <span>Balsamiq</span>
-          </div>
-
-          <div class="tool-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/blender/blender-original.svg" alt="Blender">
-            <span>Blender</span>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- PROJECTS SECTION -->
-  <section class="projects" id="projects">
-    <div class="projects-container">
-
-      <div class="about-header">
-        <span class="section-eyebrow">What I've Built</span>
-        <h1 class="about-title">Projects</h1>
-        <div class="about-divider"></div>
-      </div>
-
-      <div class="timeline">
-
-        <!-- Project 1 -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="project-card">
-            <div class="project-header">
-              <div>
-                <h2 class="project-title">Campus Housing Finder</h2>
-                <div class="project-stack">
-                  <span>Java</span><span>Android Studio</span><span>XML</span>
-                  <span>Firebase Auth</span><span>Firestore</span><span>Google Maps API</span>
-                </div>
-              </div>
-              <span class="project-date">Sep – Dec 2025</span>
-            </div>
-            <p class="project-desc">A mobile application built to help university students find off-campus housing more efficiently. The platform allows landlords to post rental listings while students can browse properties, save favorites, and view locations directly on an interactive map. Firebase services provide real-time updates and secure authentication, creating a seamless experience for both renters and property owners.</p>
-            <div class="project-features-label">Key Features</div>
-            <div class="project-features">
-              <span class="feature-tag">Student-Focused Rental Marketplace</span>
-              <span class="feature-tag">Real-Time Property Listings</span>
-              <span class="feature-tag">Google Maps Integration</span>
-              <span class="feature-tag">Favorites & Saved Properties</span>
-              <span class="feature-tag">Role-Based Authentication</span>
-              <span class="feature-tag">Firebase Cloud Database</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="project-card">
-            <div class="project-header">
-              <div>
-                <h2 class="project-title">Food Delivery Platform</h2>
-                <div class="project-stack">
-                  <span>Python</span><span>FastAPI</span><span>React</span><span>JavaScript</span>
-                  <span>PostgreSQL</span><span>Docker</span><span>Pandas</span><span>CI/CD</span>
-                </div>
-              </div>
-              <span class="project-date">Jan – Apr 2026</span>
-            </div>
-            <p class="project-desc">A full-stack food delivery platform designed to connect customers, restaurants, and administrators through a modern web application. The system includes secure JWT-based authentication, role-based access control, an admin dashboard, and RESTful APIs for efficient data management. Built using a containerized microservices architecture with Docker and automated deployment pipelines. Restaurant data was analysed using Pandas to create interactive dashboards for performance monitoring and business insights.</p>
-            <div class="project-features-label">Key Features</div>
-            <div class="project-features">
-              <span class="feature-tag">JWT Auth & Role-Based Access</span>
-              <span class="feature-tag">Admin Dashboard</span>
-              <span class="feature-tag">RESTful API Architecture</span>
-              <span class="feature-tag">Dockerized Microservices</span>
-              <span class="feature-tag">Data Analytics Dashboard</span>
-              <span class="feature-tag">CI/CD Integration</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 3 -->
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="project-card">
-            <div class="project-header">
-              <div>
-                <h2 class="project-title">AI Study Assistant (RAG)</h2>
-                <div class="project-stack">
-                  <span>Python</span><span>LangChain</span><span>ChromaDB</span>
-                  <span>Streamlit</span><span>Groq</span><span>SentenceTransformers</span><span>Docker</span>
-                </div>
-              </div>
-              <span class="project-date">Jun 2026</span>
-            </div>
-            <p class="project-desc">An AI-powered study assistant that allows students to upload learning materials and ask questions about their documents using natural language. The system uses Retrieval-Augmented Generation (RAG) to retrieve relevant information from uploaded files before generating responses, reducing hallucinations and improving answer accuracy. Supports multiple document formats, provides source citations with every response, and runs locally using vector embeddings stored in ChromaDB.</p>
-            <div class="project-features-label">Key Features</div>
-            <div class="project-features">
-              <span class="feature-tag">Retrieval-Augmented Generation</span>
-              <span class="feature-tag">Multi-Document Q&A</span>
-              <span class="feature-tag">Source Citation Tracking</span>
-              <span class="feature-tag">Local Vector Database</span>
-              <span class="feature-tag">Streamlit Interface</span>
-              <span class="feature-tag">Dockerized Deployment</span>
-            </div>
-          </div>
-        </div>
-
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Software Engineering&nbsp;&nbsp;•&nbsp;&nbsp;Visual Design&nbsp;&nbsp;•&nbsp;&nbsp;Product Thinking&nbsp;&nbsp;•&nbsp;&nbsp;Creative Code&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        <span>Software Engineering&nbsp;&nbsp;•&nbsp;&nbsp;Visual Design&nbsp;&nbsp;•&nbsp;&nbsp;Product Thinking&nbsp;&nbsp;•&nbsp;&nbsp;Creative Code&nbsp;&nbsp;•&nbsp;&nbsp;</span>
       </div>
     </div>
-  </section>
 
-  <!-- EXPERIENCE SECTION -->
-  <section class="experience" id="experience">
-    <div class="projects-container">
+    <!-- ABOUT -->
+    <section class="about" id="about" data-nav="about">
+      <div class="section-container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Who I Am</span>
+          <h2 class="section-title">About</h2>
+        </div>
 
-      <div class="about-header">
-        <span class="section-eyebrow">Where I've Worked</span>
-        <h1 class="about-title">Experience</h1>
-        <div class="about-divider"></div>
+        <p class="about-lead reveal">I build software, design the interfaces around it, and care about how the two feel together.</p>
+
+        <div class="about-body reveal">
+          <p>I'm a Computer Science student at the University of British Columbia Okanagan, working across full-stack development, AI-powered systems, and data analytics — and across Figma, Webflow, and layout design on the side. Most of what I build lives at the point where those two skill sets meet.</p>
+          <p>I like projects that force me to learn something new, and I care as much about how an interface reads as I do about what's running underneath it. Outside of that: football, tennis, and editing video.</p>
+        </div>
+
+        <div class="skills">
+          <div class="skills-col reveal">
+            <h3 class="skills-heading">Development</h3>
+            <ul class="skills-list">
+              <li class="skill-item">Python</li>
+              <li class="skill-item">Java</li>
+              <li class="skill-item">JavaScript</li>
+              <li class="skill-item">TypeScript</li>
+              <li class="skill-item">React</li>
+              <li class="skill-item">FastAPI</li>
+              <li class="skill-item">SQL / PostgreSQL</li>
+              <li class="skill-item">Docker</li>
+              <li class="skill-item">Firebase</li>
+              <li class="skill-item">Git</li>
+            </ul>
+          </div>
+          <div class="skills-col reveal">
+            <h3 class="skills-heading">Design</h3>
+            <ul class="skills-list">
+              <li class="skill-item">Figma</li>
+              <li class="skill-item">Webflow</li>
+              <li class="skill-item">Adobe Creative Cloud</li>
+              <li class="skill-item">InDesign</li>
+              <li class="skill-item">Blender</li>
+            </ul>
+          </div>
+          <div class="skills-col reveal">
+            <h3 class="skills-heading">Creative</h3>
+            <ul class="skills-list">
+              <li class="skill-item">Video Editing</li>
+              <li class="skill-item">Photography</li>
+              <li class="skill-item">Motion Design</li>
+              <li class="skill-item">Visual Storytelling</li>
+            </ul>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="timeline">
+    <!-- SERVICES -->
+    <section class="services" id="services">
+      <div class="section-container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">What I Do</span>
+          <h2 class="section-title">Services</h2>
+        </div>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="project-card">
-            <div class="project-header">
-              <div>
-                <h2 class="project-title">Web Developer & Layout Designer</h2>
-                <p class="exp-company">The Phoenix News</p>
-                <div class="project-stack">
-                  <span>Webflow</span><span>Adobe InDesign</span>
-                </div>
+        <div class="services-list">
+          <details class="service-item reveal" open>
+            <summary>
+              <span class="service-num">01</span>
+              <span class="service-title">Software Development</span>
+              <span class="service-plus" aria-hidden="true"></span>
+            </summary>
+            <p class="service-desc">Full-stack applications, APIs, databases and production-ready systems.</p>
+          </details>
+          <details class="service-item reveal">
+            <summary>
+              <span class="service-num">02</span>
+              <span class="service-title">UI / UX Design</span>
+              <span class="service-plus" aria-hidden="true"></span>
+            </summary>
+            <p class="service-desc">Interfaces, user flows, wireframes and visual systems.</p>
+          </details>
+          <details class="service-item reveal">
+            <summary>
+              <span class="service-num">03</span>
+              <span class="service-title">Web Design &amp; Development</span>
+              <span class="service-plus" aria-hidden="true"></span>
+            </summary>
+            <p class="service-desc">Responsive websites, interactive experiences and frontend development.</p>
+          </details>
+          <details class="service-item reveal">
+            <summary>
+              <span class="service-num">04</span>
+              <span class="service-title">Creative Development</span>
+              <span class="service-plus" aria-hidden="true"></span>
+            </summary>
+            <p class="service-desc">Interactive experiences, motion, visual storytelling and experimental interfaces.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED WORK -->
+    <section class="work" id="work" data-nav="work">
+      <div class="section-container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Selected Work</span>
+          <h2 class="section-title">Projects</h2>
+        </div>
+
+        <div class="work-list">
+
+          <article class="work-item reveal">
+            <div class="work-visual" data-cursor="VIEW">
+              <span class="work-visual-mark">CH</span>
+            </div>
+            <div class="work-info">
+              <span class="work-number">01</span>
+              <h3 class="work-title">Campus Housing Finder</h3>
+              <div class="work-tags">
+                <span>Java</span><span>Android Studio</span><span>Firebase</span><span>Google Maps API</span>
               </div>
-              <span class="project-date">Sep 2025 – Apr 2026</span>
+              <p class="work-desc">A mobile application built to help university students find off-campus housing more efficiently. Landlords post listings; students browse, save favorites, and view them on an interactive map, with Firebase handling real-time updates and authentication.</p>
+              <span class="work-period">Sep – Dec 2025</span>
             </div>
-            <p class="project-desc">Worked as part of a fast-paced student newsroom, collaborating with editors and designers to create engaging content for both digital and print publications. My role involved improving website usability, designing page layouts, and ensuring content was presented in a clear and visually appealing way.</p>
-            <p class="project-desc">This experience strengthened my understanding of user experience, design principles, teamwork, and communication while working under tight publication deadlines. It also gave me practical experience balancing technical implementation with the needs of real users and content creators.</p>
-            <div class="project-features-label">Key Contributions</div>
-            <div class="project-features">
-              <span class="feature-tag">Print & Digital Layout Design</span>
-              <span class="feature-tag">Website Content Organisation</span>
-              <span class="feature-tag">Publishing Deadline Management</span>
-              <span class="feature-tag">UI/UX Principles</span>
-              <span class="feature-tag">Cross-Team Collaboration</span>
+          </article>
+
+          <article class="work-item reveal">
+            <div class="work-visual" data-cursor="VIEW">
+              <span class="work-visual-mark">FD</span>
             </div>
+            <div class="work-info">
+              <span class="work-number">02</span>
+              <h3 class="work-title">Food Delivery Platform</h3>
+              <div class="work-tags">
+                <span>FastAPI</span><span>React</span><span>PostgreSQL</span><span>Docker</span>
+              </div>
+              <p class="work-desc">A full-stack platform connecting customers, restaurants, and admins — JWT auth, role-based access, an admin dashboard, and a containerized microservice architecture with automated deployment. Restaurant data feeds a Pandas-built analytics dashboard.</p>
+              <span class="work-period">Jan – Apr 2026</span>
+            </div>
+          </article>
+
+          <article class="work-item reveal">
+            <div class="work-visual" data-cursor="VIEW">
+              <span class="work-visual-mark">AI</span>
+            </div>
+            <div class="work-info">
+              <span class="work-number">03</span>
+              <h3 class="work-title">AI Study Assistant</h3>
+              <div class="work-tags">
+                <span>LangChain</span><span>ChromaDB</span><span>Streamlit</span><span>Groq</span>
+              </div>
+              <p class="work-desc">A RAG-based study assistant students can question in natural language about their own uploaded materials. Retrieval-augmented generation grounds every answer in the source documents, with citations and local vector storage in ChromaDB.</p>
+              <span class="work-period">Jun 2026</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN WORK -->
+    <section class="design-work" id="design" data-nav="design">
+      <div class="section-container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Design Is Part Of The Process</span>
+          <h2 class="section-title">Design Work</h2>
+        </div>
+        <div class="design-gallery" id="design-gallery"><!-- rendered by script.js --></div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="experience" id="experience" data-nav="experience">
+      <div class="section-container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Where I've Worked</span>
+          <h2 class="section-title">Experience</h2>
+        </div>
+
+        <details class="exp-item reveal" open>
+          <summary>
+            <span class="service-num">01</span>
+            <span class="exp-summary-text">
+              <span class="exp-role">Web Developer &amp; Layout Designer</span>
+              <span class="exp-company">The Phoenix News</span>
+            </span>
+            <span class="exp-period">Sep 2025 – Apr 2026</span>
+            <span class="service-plus" aria-hidden="true"></span>
+          </summary>
+          <div class="exp-body">
+            <p>Worked inside a fast-paced student newsroom, collaborating with editors and designers on both digital and print publications — improving website usability, designing page layouts, and keeping content clear and visually consistent under tight deadlines.</p>
+            <div class="work-tags">
+              <span>Print &amp; Digital Layout</span><span>Webflow</span><span>Adobe InDesign</span><span>UI/UX Principles</span>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact" data-nav="contact">
+      <div class="section-container">
+        <div class="contact-statement reveal">
+          <span class="section-eyebrow">Have An Idea?</span>
+          <h2 class="contact-title">Let's build<br>something good.</h2>
+          <a href="mailto:chirayu.ahuja3108@gmail.com" class="contact-email">chirayu.ahuja3108@gmail.com</a>
+          <div class="contact-links">
+            <a href="https://www.linkedin.com/in/chirayu-ahuja-532078275/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/Chirayu3108" target="_blank" rel="noopener">GitHub</a>
           </div>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT SECTION -->
-  <section class="contact" id="contact">
-    <div class="contact-container">
-
-      <div class="about-header">
-        <span class="section-eyebrow">Let's Work Together</span>
-        <h1 class="about-title">Get In Touch</h1>
-        <div class="about-divider"></div>
-      </div>
-
-      <div class="contact-content">
-
-        <!-- Left — Info -->
-        <div class="contact-left">
-          <h2 class="contact-tagline">Open to building<br><span>your next big idea.</span></h2>
-          <p class="contact-text">Whether you have a project in mind, a problem to solve, or just want to connect — I'm always open to collaborating. I enjoy turning ideas into real, working products and would love to help bring yours to life.</p>
-          <div class="contact-info">
-            <a href="mailto:chirayu.ahuja3108@gmail.com" class="contact-link">
-              <i class="fas fa-envelope"></i>
-              <span>chirayu.ahuja3108@gmail.com</span>
-            </a>
-            <a href="https://www.linkedin.com/in/chirayu-ahuja-532078275/" target="_blank" class="contact-link">
-              <i class="fab fa-linkedin-in"></i>
-              <span>linkedin.com/in/chirayu-ahuja</span>
-            </a>
-            <a href="https://github.com/Chirayu3108" target="_blank" class="contact-link">
-              <i class="fab fa-github"></i>
-              <span>github.com/Chirayu3108</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Right — Form -->
-        <form class="contact-form" id="contact-form">
+        <form class="contact-form reveal" id="contact-form">
           <div class="form-group">
             <label for="contact-name">Name</label>
             <input type="text" id="contact-name" placeholder="Your name" required>
@@ -412,23 +312,30 @@
           </div>
           <div class="form-group">
             <label for="contact-message">Message</label>
-            <textarea id="contact-message" rows="6" placeholder="Tell me about your project or idea..." required></textarea>
+            <textarea id="contact-message" rows="5" placeholder="Tell me about your project or idea..." required></textarea>
           </div>
           <button type="submit" class="btn-primary form-submit">Send Message</button>
         </form>
-
       </div>
-    </div>
-  </section>
+    </section>
+
+  </main>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-content">
-      <p class="footer-copy">© 2026 Chirayu Ahuja</p>
-      <div class="footer-icons">
+      <div class="footer-identity">
+        <span class="footer-name">Chirayu Ahuja</span>
+        <span class="footer-role">Software Developer &amp; Designer — Canada</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/chirayu-ahuja-532078275/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/Chirayu3108" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
         <a href="mailto:chirayu.ahuja3108@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-        <a href="https://www.linkedin.com/in/chirayu-ahuja-532078275/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-        <a href="https://github.com/Chirayu3108" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
+      <div class="footer-meta">
+        <span>© 2026</span>
+        <a href="#home" class="footer-top">Back to top ↑</a>
       </div>
     </div>
   </footer>
