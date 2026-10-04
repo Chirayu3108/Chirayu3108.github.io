@@ -471,36 +471,6 @@ header.scrolled .hamburger span {
 }
 
 /* =============================================
-   MARQUEE
-   ============================================= */
-.marquee {
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  overflow: hidden;
-  padding: 22px 0;
-  background: var(--bg-alt);
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marqueeScroll 28s linear infinite;
-}
-
-.marquee-track span {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 44px);
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  color: var(--ink);
-}
-
-@keyframes marqueeScroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-/* =============================================
    SHARED SECTION LAYOUT
    ============================================= */
 .section-container {
@@ -548,8 +518,14 @@ section {
 }
 
 /* =============================================
-   ABOUT
+   ABOUT — dark, same vibe as the hero/statement
+   sections above it
    ============================================= */
+.about {
+  background: var(--ink);
+  color: var(--bg);
+}
+
 .about-lead {
   font-family: var(--font-serif);
   font-size: clamp(24px, 3.4vw, 38px);
@@ -570,7 +546,7 @@ section {
 .about-body p {
   font-size: 15px;
   font-weight: 300;
-  color: var(--ink-soft);
+  color: rgba(242, 239, 233, 0.65);
   line-height: 1.9;
 }
 
@@ -578,7 +554,7 @@ section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 48px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(242, 239, 233, 0.15);
   padding-top: 48px;
 }
 
@@ -603,7 +579,7 @@ section {
   font-family: var(--font-display);
   font-size: 22px;
   letter-spacing: 0.01em;
-  color: var(--ink);
+  color: var(--bg);
   transition: opacity 0.3s ease, color 0.3s ease;
 }
 
@@ -696,7 +672,10 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 }
 
 /* =============================================
-   STATEMENT — pinned horizontal scroll reveal
+   STATEMENT — pinned scroll: headline slides in
+   from the right and settles on the left, then
+   the paragraph slides up to join it, matching
+   the Figma "Second Page" layout at rest.
    ============================================= */
 .statement {
   position: relative;
@@ -710,38 +689,68 @@ details[open] .service-plus::after { transform: rotate(90deg); }
   top: 0;
   height: 100vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
   overflow: hidden;
 }
 
-.statement-text {
-  position: relative;
-  display: flex;
-  white-space: nowrap;
+.statement-flow {
+  width: 100%;
+  padding: 0 36px;
   font-family: var(--font-hero);
   font-weight: 700;
-  font-size: clamp(2.75rem, 8vw, 7.5rem);
-  letter-spacing: -0.01em;
-  will-change: transform;
+  color: var(--bg);
+  font-size: clamp(1.1rem, 2.3vw, 2.5rem);
+  line-height: 1.45;
 }
 
-.statement-word {
-  display: inline-flex;
+.statement-headline {
+  display: inline-block;
+  overflow: hidden;
   white-space: nowrap;
+  vertical-align: baseline;
+  text-transform: uppercase;
+  font-size: clamp(1.1rem, 5vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  transform-origin: left center;
+  will-change: transform;
 }
 
 .statement-char {
   display: inline-block;
-  color: rgba(242, 239, 233, 0.1);
-  transition: color 0.2s ease;
-}
-
-.statement-char.is-revealed {
   color: var(--bg);
+  opacity: 0;
+  will-change: transform, opacity;
 }
 
-.statement-char.is-revealed.is-accent {
+.statement-char.is-accent {
   color: var(--gold);
+}
+
+.statement-char.is-operator {
+  font-weight: 300;
+  font-style: italic;
+  margin: 0 0.12em;
+}
+
+/* =============================================
+   STATEMENT PARAGRAPH — sits directly under the
+   headline in the same pinned block, matching the
+   Figma "Second Page" layout at rest.
+   ============================================= */
+.statement-paragraph {
+  width: 100%;
+  max-width: 920px;
+  padding: 0 36px;
+  font-family: var(--font-nav);
+  font-weight: 500;
+  color: #fff;
+  font-size: clamp(1rem, 1.9vw, 1.85rem);
+  line-height: 1.5;
+  opacity: 0;
+  will-change: transform, opacity;
 }
 
 /* =============================================
@@ -1158,10 +1167,6 @@ footer {
     transition: none;
   }
 
-  .marquee-track {
-    animation: none;
-  }
-
   .scroll-cue i {
     animation: none;
   }
@@ -1176,23 +1181,22 @@ footer {
     height: auto;
   }
 
-  .statement-text {
+  .statement-headline {
     transform: none !important;
-    white-space: normal;
-    justify-content: center;
-    text-align: center;
-    flex-wrap: wrap;
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 24px;
   }
 
   .statement-char {
-    color: var(--bg);
+    opacity: 1;
+    transform: none !important;
   }
 
   .statement-char.is-accent {
     color: var(--gold);
+  }
+
+  .statement-paragraph {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   html.has-cursor .cursor-dot {

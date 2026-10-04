@@ -32,66 +32,69 @@ heroLines.forEach((lineEl, lineIndex) => {
 });
 
 /* ============================================
-   STATEMENT — pinned section where vertical
-   scroll drives the text leftward across the
-   screen, revealing one letter at a time as it
-   crosses a fixed point on screen.
+   STATEMENT — pinned three-stage scroll:
+   1) the headline slides in from the right at an
+      enlarged size, each letter sliding up into
+      place as it's revealed
+   2) once fully revealed, it shrinks down to its
+      natural full-width size and stops — it never
+      gets any smaller than that, however far you
+      keep scrolling
+   3) the paragraph below then slowly rises up and
+      fades in over its own generous scroll budget
    ============================================ */
 const statementSection = document.querySelector(".statement");
-const statementText = document.querySelector(".statement-text");
+const statementHeadline = document.querySelector(".statement-headline");
+const statementParagraph = document.querySelector(".statement-paragraph");
 
-if (statementSection && statementText) {
-  const fullText = statementText.textContent.trim();
-  statementText.textContent = "";
+if (statementSection && statementHeadline) {
+  const fullText = statementHeadline.textContent.trim();
+  statementHeadline.textContent = "";
   const accentStart = fullText.indexOf("Experience");
 
-  // Characters are grouped into per-word wrapper spans so that, if the line
-  // wraps (reduced-motion / narrow layouts), it only breaks between words.
-  const chars = [];
-  let idx = 0;
-  fullText.split(" ").forEach((word, wordIndex, words) => {
-    const wordSpan = document.createElement("span");
-    wordSpan.className = "statement-word";
-    statementText.appendChild(wordSpan);
-
-    for (const char of word) {
-      const span = document.createElement("span");
-      span.className = "statement-char";
-      if (accentStart !== -1 && idx >= accentStart) span.classList.add("is-accent");
-      span.textContent = char;
-      wordSpan.appendChild(span);
-      chars.push(span);
-      idx++;
-    }
-
-    if (wordIndex < words.length - 1) {
-      const space = document.createElement("span");
-      space.className = "statement-char";
-      if (accentStart !== -1 && idx >= accentStart) space.classList.add("is-accent");
-      space.textContent = " ";
-      statementText.appendChild(space);
-      chars.push(space);
-      idx++;
-    }
+  const chars = [...fullText].map((char, i) => {
+    const span = document.createElement("span");
+    span.className = "statement-char";
+    if (char === "+" || char === "=") span.classList.add("is-operator");
+    if (accentStart !== -1 && i >= accentStart) span.classList.add("is-accent");
+    span.textContent = char === " " ? " " : char;
+    statementHeadline.appendChild(span);
+    return span;
   });
 
   // Reduced motion: skip the scroll-linked pin/translate — the reduced-motion
-  // CSS block renders these same spans statically, fully revealed.
+  // CSS block renders these same spans statically, fully revealed and settled.
   if (!reducedMotion) {
-    const THRESHOLD_RATIO = 0.42; // where on screen (from left) letters reveal
-    const SCROLL_FACTOR = 1.2; // >1 = more vertical scroll needed per px of horizontal travel
+    const BIG_SCALE = 1.7; // how much larger the headline is while entering/revealing
+    const SETTLE_GAP_VW = 0.08; // fraction of viewport width short of home where it parks, still big
+    const SCROLL_FACTOR = 1.2; // >1 = more vertical scroll needed per px of travel
+    const SHRINK_TRAVEL_VH = 0.4; // stage-2 (shrink to natural full-width size) scroll budget
+    const PARAGRAPH_REVEAL_VH = 0.7; // stage-3 (paragraph rise-reveal) scroll budget — generous, so it plays out slowly
+    const CHAR_RISE_EM = 0.55; // how far below rest each letter starts, in em
+    const CHAR_REVEAL_WINDOW = 0.09; // fraction of stage-1 progress over which one letter fades/slides in
+    const PARAGRAPH_RISE_EM = 2.5; // how far below rest the paragraph starts, in em
+
     let offsets = [];
-    let startX = 0;
-    let endX = 0;
+    let maxOffset = 1;
+    let startXOffset = 0;
+    let parkX = 0;
+    let s1 = 0.3; // progress fraction: end of stage 1 (enter + reveal)
+    let s2 = 0.5; // progress fraction: end of stage 2 (shrink to natural size — headline is fully settled, full width, and stops changing)
 
     function layout() {
       offsets = chars.map((c) => c.offsetLeft);
-      const textWidth = statementText.scrollWidth;
-      const thresholdX = window.innerWidth * THRESHOLD_RATIO;
-      startX = window.innerWidth;
-      endX = thresholdX - textWidth - 80;
-      const travel = startX - endX;
-      statementSection.style.height = `${window.innerHeight + travel * SCROLL_FACTOR}px`;
+      maxOffset = Math.max(...offsets, 1);
+      startXOffset = window.innerWidth; // headline starts one viewport-width right of its natural spot
+      parkX = window.innerWidth * SETTLE_GAP_VW;
+
+      const weightEnter = (startXOffset - parkX) * SCROLL_FACTOR;
+      const weightShrink = window.innerHeight * SHRINK_TRAVEL_VH * SCROLL_FACTOR;
+      const weightReveal = window.innerHeight * PARAGRAPH_REVEAL_VH * SCROLL_FACTOR;
+      const total = weightEnter + weightShrink + weightReveal;
+      s1 = weightEnter / total;
+      s2 = (weightEnter + weightShrink) / total;
+
+      statementSection.style.height = `${window.innerHeight + total}px`;
     }
 
     function update() {
@@ -101,13 +104,43 @@ if (statementSection && statementText) {
         ? Math.min(1, Math.max(0, -rect.top / scrollDistance))
         : 0;
 
-      const thresholdX = window.innerWidth * THRESHOLD_RATIO;
-      const currentX = startX + (endX - startX) * progress;
-      statementText.style.transform = `translateX(${currentX}px)`;
+      const stage1 = Math.min(1, progress / s1);
+      const stage2 = s1 < s2
+        ? Math.min(1, Math.max(0, (progress - s1) / (s2 - s1)))
+        : (progress >= s1 ? 1 : 0);
+      const stage3 = s2 < 1
+        ? Math.min(1, Math.max(0, (progress - s2) / (1 - s2)))
+        : (progress >= s2 ? 1 : 0);
 
+      const currentX = progress <= s1
+        ? startXOffset + (parkX - startXOffset) * stage1
+        : parkX + (0 - parkX) * stage2;
+      // Shrinks from BIG_SCALE down to 1 (its natural, full-width CSS size) and
+      // stops there — once stage2 hits 1 the headline is frozen for good, no
+      // matter how much further you scroll.
+      const currentScale = progress <= s1
+        ? BIG_SCALE
+        : BIG_SCALE + (1 - BIG_SCALE) * stage2;
+      statementHeadline.style.transform = `translateX(${currentX}px) scale(${currentScale})`;
+
+      // Each letter fades and slides up into place over a short window as
+      // stage-1 progress passes its left-to-right position in the phrase.
       chars.forEach((c, i) => {
-        c.classList.toggle("is-revealed", currentX + offsets[i] <= thresholdX);
+        // Scaled by (1 - CHAR_REVEAL_WINDOW) so the last character's own
+        // reveal window still finishes exactly at stage1 = 1, instead of
+        // being cut off mid-transition when stage 2 (shrink) begins.
+        const charThreshold = (offsets[i] / maxOffset) * (1 - CHAR_REVEAL_WINDOW);
+        const t = Math.min(1, Math.max(0, (stage1 - charThreshold) / CHAR_REVEAL_WINDOW));
+        c.style.opacity = String(t);
+        c.style.transform = `translateY(${(1 - t) * CHAR_RISE_EM}em)`;
       });
+
+      // Paragraph rises up and fades in slowly, once the headline has
+      // fully settled (stage 3, spread over its own generous scroll budget).
+      if (statementParagraph) {
+        statementParagraph.style.opacity = String(stage3);
+        statementParagraph.style.transform = `translateY(${(1 - stage3) * PARAGRAPH_RISE_EM}em)`;
+      }
     }
 
     layout();
