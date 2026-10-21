@@ -54,7 +54,6 @@ Editorial, light, typography-led — inspired by dzinrstudio.com's pacing/hierar
 - **Reveal system:** one shared `IntersectionObserver` watches every `.reveal` element (added to section headers, cards, etc.) and adds `.in-view` at 15% threshold — do not create a second observer for new sections, just add the `.reveal` class
 - **Nav:** scroll listener toggles `.scrolled` on `#site-header`; a second observer (`rootMargin: "-45% 0px -45% 0px"`) tracks which `[data-nav]` section is centered and toggles `.active` on the matching nav link
 - **Hamburger menu:** toggles `.open` on `#hamburger`/`#nav-links`, closes on outside click or nav link click
-- **Cursor:** custom dot follower, only attached when `matchMedia('(hover: hover) and (pointer: fine)')` matches and reduced-motion is off; shows a label from any element's `data-cursor` attribute
 - **Design Work:** rendered client-side from the `designWork` array at the top of `script.js` — this is the one place content and rendering are separated; everything else is static HTML
 - **Contact form:** `submit` opens a `mailto:` link pre-filled with name/email/message (no backend)
 

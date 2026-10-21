@@ -170,63 +170,6 @@ a {
 }
 
 /* =============================================
-   CURSOR
-   ============================================= */
-.cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--gold);
-  transform: translate3d(-50%, -50%, 0);
-  pointer-events: none;
-  z-index: 2500;
-  display: none;
-  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
-}
-
-.cursor-dot span {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--bg);
-  opacity: 0;
-  white-space: nowrap;
-  transition: opacity 0.2s ease;
-}
-
-.cursor-dot.active {
-  width: 64px;
-  height: 64px;
-  background: var(--gold);
-}
-
-.cursor-dot.active span {
-  opacity: 1;
-}
-
-html.has-cursor {
-  cursor: none;
-}
-
-html.has-cursor .cursor-dot {
-  display: block;
-}
-
-html.has-cursor input,
-html.has-cursor textarea {
-  cursor: text;
-}
-
-/* =============================================
    NAVBAR
    ============================================= */
 header {
@@ -1257,14 +1200,6 @@ footer {
   .statement-paragraph {
     opacity: 1 !important;
     transform: none !important;
-  }
-
-  html.has-cursor .cursor-dot {
-    display: none;
-  }
-
-  html.has-cursor {
-    cursor: auto;
   }
 }
 

@@ -196,7 +196,7 @@ if (gallery) {
     const card = document.createElement("article");
     card.className = "design-card reveal" + (i === 0 ? " featured" : "");
     card.innerHTML = `
-      <div class="design-visual" data-cursor="EXPLORE"></div>
+      <div class="design-visual"></div>
       <div class="design-meta"><span>${item.category}</span><span>${item.year}</span></div>
       <h3 class="design-card-title">${item.title}</h3>
       <p class="design-card-desc">${item.description}</p>
@@ -288,49 +288,6 @@ if (hamburger && navLinks) {
 
   document.addEventListener("click", (e) => {
     if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) closeMenu();
-  });
-}
-
-/* ============================================
-   CUSTOM CURSOR — desktop pointer devices only,
-   respects prefers-reduced-motion
-   ============================================ */
-const supportsCursor =
-  window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
-  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-if (supportsCursor) {
-  document.documentElement.classList.add("has-cursor");
-  const dot = document.getElementById("cursor-dot");
-  const label = dot.querySelector("span");
-  let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0;
-
-  window.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  function follow() {
-    dotX += (mouseX - dotX) * 0.18;
-    dotY += (mouseY - dotY) * 0.18;
-    dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
-    requestAnimationFrame(follow);
-  }
-  requestAnimationFrame(follow);
-
-  document.addEventListener("mouseover", (e) => {
-    const target = e.target.closest("[data-cursor]");
-    if (target) {
-      dot.classList.add("active");
-      label.textContent = target.dataset.cursor;
-    }
-  });
-
-  document.addEventListener("mouseout", (e) => {
-    const target = e.target.closest("[data-cursor]");
-    if (target && !e.relatedTarget?.closest("[data-cursor]")) {
-      dot.classList.remove("active");
-    }
   });
 }
 
