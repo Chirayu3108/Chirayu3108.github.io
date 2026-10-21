@@ -24,6 +24,7 @@
   --gold: #ad8f66;
   --line: rgba(20, 20, 20, 0.12);
   --line-strong: rgba(20, 20, 20, 0.4);
+  --banner-h: 64px;
 
   --font-display: "Bebas Neue", sans-serif;
   --font-serif: "Playfair Display", serif;
@@ -74,6 +75,61 @@ a {
 
 .skip-link:focus {
   top: 16px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =============================================
+   CONSTRUCTION BANNER — fixed marquee strip above
+   the header; same look as the site's dark sections,
+   gold used only as the text accent, never as a fill
+   ============================================= */
+.construction-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+  height: var(--banner-h);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--ink);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.construction-track {
+  display: flex;
+  width: max-content;
+  animation: constructionScroll 18s linear infinite;
+}
+
+.construction-track span {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.6vw, 30px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bg);
+}
+
+.construction-track .accent {
+  color: var(--gold);
+}
+
+@keyframes constructionScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 /* =============================================
@@ -175,7 +231,7 @@ html.has-cursor textarea {
    ============================================= */
 header {
   position: fixed;
-  top: 0;
+  top: var(--banner-h);
   left: 0;
   right: 0;
   z-index: 1000;
@@ -334,7 +390,7 @@ header.scrolled .hamburger span {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 140px 5% 100px;
+  padding: calc(140px + var(--banner-h)) 5% 100px;
   background: var(--ink);
   color: var(--bg);
 }
@@ -1149,6 +1205,10 @@ footer {
 
   .loader { display: none; }
 
+  .construction-track {
+    animation: none;
+  }
+
   .reveal-line {
     opacity: 1;
     transform: none;
@@ -1227,7 +1287,7 @@ footer {
 @media (max-width: 992px) {
   nav { padding: 14px 32px; }
 
-  .hero { padding: 120px 8% 90px; min-height: auto; }
+  .hero { padding: calc(120px + var(--banner-h)) 8% 90px; min-height: auto; }
 
   .section-container { padding: 0 40px; }
   section { padding: 100px 0; }
@@ -1278,7 +1338,7 @@ footer {
   .nav-extra { gap: 14px; }
   .btn-pill { padding: 10px 18px; }
 
-  .hero { padding: 110px 6% 70px; }
+  .hero { padding: calc(110px + var(--banner-h)) 6% 70px; }
   .hero-tagline {
     position: static;
     text-align: left;
