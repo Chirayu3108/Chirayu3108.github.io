@@ -171,6 +171,94 @@ if (statementSection && statementHeadline) {
 }
 
 /* ============================================
+   SKILLS — constellation, rendered from this data
+   array (same pattern as designWork below). Each
+   category radiates from a shared center at its own
+   angle, 120° apart, so a category's tools fan out
+   in their own sector with no overlap between
+   groups; node positions are computed, not hand-
+   placed, since the item counts differ per category.
+   ============================================ */
+const skillGroups = [
+  { name: "Development", angle: 205, tools: ["Python", "Java", "JavaScript", "TypeScript", "React", "FastAPI", "SQL / PostgreSQL", "Docker", "Firebase", "Git"] },
+  { name: "Design", angle: 325, tools: ["Figma", "Webflow", "Adobe Creative Cloud", "InDesign", "Blender"] },
+  { name: "Creative", angle: 85, tools: ["Video Editing", "Photography", "Motion Design", "Visual Storytelling"] },
+];
+
+const constellationEl = document.getElementById("skills-constellation");
+
+if (constellationEl) {
+  // Everything below lives in one 0–100 percentage space, for both the
+  // SVG viewBox and the nodes' CSS left/top — so a position never needs
+  // converting between the two. The container is wider than it is tall,
+  // so an equal x/y radius naturally renders as a wide ellipse, which
+  // suits the landscape layout rather than fighting it.
+  const CENTER = { x: 50, y: 50 };
+  const HUB_RADIUS = 20;
+  const TOOL_RADIUS = 42;
+  const MAX_SPREAD = 110; // degrees — stays within each group's 120° sector
+
+  const polar = (angleDeg, radius) => {
+    const rad = (angleDeg * Math.PI) / 180;
+    return { x: CENTER.x + radius * Math.cos(rad), y: CENTER.y + radius * Math.sin(rad) };
+  };
+
+  const line = (x1, y1, x2, y2) => {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    el.setAttribute("x1", x1);
+    el.setAttribute("y1", y1);
+    el.setAttribute("x2", x2);
+    el.setAttribute("y2", y2);
+    return el;
+  };
+
+  skillGroups.forEach((group) => {
+    const groupEl = document.createElement("div");
+    groupEl.className = "constellation-group";
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "constellation-lines");
+    svg.setAttribute("viewBox", "0 0 100 100");
+    svg.setAttribute("preserveAspectRatio", "none");
+
+    const hub = polar(group.angle, HUB_RADIUS);
+    svg.appendChild(line(CENTER.x, CENTER.y, hub.x, hub.y));
+
+    const hubEl = document.createElement("span");
+    hubEl.className = "constellation-hub";
+    hubEl.style.left = `${hub.x}%`;
+    hubEl.style.top = `${hub.y}%`;
+    hubEl.textContent = group.name;
+    groupEl.appendChild(hubEl);
+
+    const spread = Math.min(MAX_SPREAD, group.tools.length * 13);
+    group.tools.forEach((tool, i) => {
+      const t = group.tools.length > 1 ? i / (group.tools.length - 1) : 0.5;
+      const toolAngle = group.angle - spread / 2 + spread * t;
+      const radius = TOOL_RADIUS + ((i % 3) - 1) * 4;
+      const pos = polar(toolAngle, radius);
+
+      svg.appendChild(line(hub.x, hub.y, pos.x, pos.y));
+
+      const toolEl = document.createElement("span");
+      toolEl.className = "constellation-tool";
+      toolEl.style.left = `${pos.x}%`;
+      toolEl.style.top = `${pos.y}%`;
+      toolEl.textContent = tool;
+      groupEl.appendChild(toolEl);
+    });
+
+    groupEl.insertBefore(svg, groupEl.firstChild);
+    constellationEl.appendChild(groupEl);
+  });
+
+  const centerEl = document.createElement("span");
+  centerEl.className = "constellation-center";
+  centerEl.textContent = "CA";
+  constellationEl.appendChild(centerEl);
+}
+
+/* ============================================
    DESIGN WORK — data-driven gallery
    Add a new object here to add a new project;
    the first entry in the array renders large.
@@ -263,31 +351,49 @@ document.querySelectorAll("[data-nav]").forEach((section) => {
   if (navLinksByTarget[section.dataset.nav]) sectionObserver.observe(section);
 });
 
+// Hamburger replaces the full nav as soon as the hero is fully scrolled
+// past — independent of the (gappy) section-link observer above, since the
+// pinned statement section between hero and about has no nav link of its own.
+const heroSection = document.getElementById("home");
+if (heroSection) {
+  const heroObserver = new IntersectionObserver(
+    (entries) => entries.forEach((entry) => {
+      header.classList.toggle("is-home", entry.isIntersecting);
+      // No nav link should read as active while the landing page itself is in view
+      if (entry.isIntersecting) {
+        Object.values(navLinksByTarget).forEach((l) => l.classList.remove("active"));
+      }
+    }),
+    { threshold: 0 }
+  );
+  heroObserver.observe(heroSection);
+}
+
 /* ============================================
    HAMBURGER MENU
    ============================================ */
 const hamburger = document.getElementById("hamburger");
-const navLinks = document.getElementById("nav-links");
+const navOverlay = document.getElementById("nav-overlay");
 
-if (hamburger && navLinks) {
+if (hamburger && navOverlay) {
   const closeMenu = () => {
     hamburger.classList.remove("open");
     hamburger.setAttribute("aria-expanded", "false");
-    navLinks.classList.remove("open");
+    navOverlay.classList.remove("open");
   };
 
   hamburger.addEventListener("click", () => {
     const open = hamburger.classList.toggle("open");
     hamburger.setAttribute("aria-expanded", String(open));
-    navLinks.classList.toggle("open", open);
+    navOverlay.classList.toggle("open", open);
   });
 
-  navLinks.querySelectorAll("a").forEach((link) => {
+  navOverlay.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeMenu);
   });
 
   document.addEventListener("click", (e) => {
-    if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) closeMenu();
+    if (!hamburger.contains(e.target) && !navOverlay.contains(e.target)) closeMenu();
   });
 }
 

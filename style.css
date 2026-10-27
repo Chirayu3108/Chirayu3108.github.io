@@ -26,6 +26,14 @@
   --line-strong: rgba(20, 20, 20, 0.4);
   --banner-h: 64px;
 
+  /* Site is dark-themed throughout — light-on-dark equivalents of the
+     tokens above, used for body text/hairlines on the --ink background. */
+  --ink-alt: #1c1c1c;
+  --bg-soft: rgba(242, 239, 233, 0.65);
+  --bg-muted: rgba(242, 239, 233, 0.45);
+  --line-light: rgba(242, 239, 233, 0.15);
+  --line-light-strong: rgba(242, 239, 233, 0.35);
+
   --font-display: "Bebas Neue", sans-serif;
   --font-serif: "Playfair Display", serif;
   --font-body: "Roboto", sans-serif;
@@ -38,8 +46,8 @@ html {
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--ink);
+  background-color: var(--ink);
+  color: var(--bg);
   font-family: var(--font-body);
   overflow-x: hidden;
 }
@@ -178,13 +186,31 @@ header {
   left: 0;
   right: 0;
   z-index: 1000;
-  transition: background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
+  transition: border-color 0.35s ease;
 }
 
+/* The blur/tint lives on a pseudo-element rather than header itself, so
+   header stays free of any filter/transform — those create a new
+   containing block that would break position:fixed descendants like the
+   fullscreen nav overlay below, pinning it to header's own small box
+   instead of the viewport. */
 header.scrolled {
-  background-color: rgba(242, 239, 233, 0.85);
-  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+header.scrolled::before {
+  opacity: 1;
 }
 
 nav {
@@ -284,22 +310,11 @@ nav {
   font-size: 0.8em;
 }
 
-header.scrolled .logo,
-header.scrolled .nav-links a,
-header.scrolled .nav-extra-link {
-  color: var(--ink);
-}
-
-header.scrolled .nav-links a:hover,
-header.scrolled .nav-links a.active {
-  color: var(--gold);
-}
-
 .hamburger {
   display: none;
   flex-direction: column;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
   background: none;
   border: none;
   cursor: pointer;
@@ -308,21 +323,113 @@ header.scrolled .nav-links a.active {
 
 .hamburger span {
   display: block;
-  width: 22px;
+  width: 24px;
   height: 2px;
   background: var(--bg);
-  border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+  border-radius: 0;
+  transition: transform 0.25s ease 0.12s, opacity 0.15s ease, background-color 0.3s ease;
   transform-origin: center;
 }
 
-header.scrolled .hamburger span {
-  background: var(--ink);
+/* Middle line disappears first; top/bottom wait a beat then slant into an X */
+.hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transition-delay: 0s; }
+.hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* Only show the hamburger off the landing page; the full nav stays on it */
+header:not(.is-home) .hamburger {
+  display: flex;
 }
 
-.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+header:not(.is-home) .nav-extra,
+header:not(.is-home) .nav-links {
+  display: none;
+}
+
+/* =============================================
+   FULLSCREEN NAV OVERLAY — opened by the hamburger
+   off the landing page. Slides down from above like
+   a shutter; once it lands, the links glide up into
+   place one after another. Sits as a sibling of
+   header (not nested inside it) — header has its own
+   higher z-index, so the logo and the hamburger-
+   turned-X stay visible on top throughout.
+   ============================================= */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  padding-top: 120px;
+  background: var(--ink);
+  transform: translateY(-100%);
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  pointer-events: none;
+}
+
+.nav-overlay.open {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-overlay-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Each link glides up into place once the shutter has mostly landed */
+.nav-overlay-links li {
+  overflow: hidden;
+}
+
+.nav-overlay-links a {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--bg);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+}
+
+.nav-overlay.open .nav-overlay-links a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-overlay-links a:hover {
+  color: var(--gold);
+}
+
+.nav-overlay-links li:nth-child(1) a { transition-delay: 0.35s; }
+.nav-overlay-links li:nth-child(2) a { transition-delay: 0.42s; }
+.nav-overlay-links li:nth-child(3) a { transition-delay: 0.49s; }
+.nav-overlay-links li:nth-child(4) a { transition-delay: 0.56s; }
+
+/* Github / LinkedIn / Let's Talk — glides in just after the main links */
+.nav-overlay-extra {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.65s, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.65s;
+}
+
+.nav-overlay.open .nav-overlay-extra {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* =============================================
    HERO
@@ -411,9 +518,9 @@ header.scrolled .hamburger span {
 .btn-primary {
   display: inline-block;
   padding: 13px 34px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--bg);
   background-color: transparent;
-  color: var(--ink);
+  color: var(--bg);
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 400;
@@ -425,8 +532,8 @@ header.scrolled .hamburger span {
 }
 
 .btn-primary:hover {
-  background-color: var(--ink);
-  color: var(--bg);
+  background-color: var(--bg);
+  color: var(--ink);
 }
 
 /* Hero line reveal */
@@ -480,7 +587,7 @@ header.scrolled .hamburger span {
 
 section {
   padding: 130px 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--line-light);
 }
 
 .section-header {
@@ -549,45 +656,92 @@ section {
   line-height: 1.9;
 }
 
-.skills {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
-  border-top: 1px solid rgba(242, 239, 233, 0.15);
+/* =============================================
+   SKILLS — constellation. Tools are nodes scattered
+   around a center point, connected by thin lines to
+   their category hub. Positions are computed in
+   script.js (skillGroups), not hand-placed — each
+   category gets its own angular sector radiating
+   from center so nothing overlaps. Hovering any
+   node in a group brightens that whole branch and
+   dims the rest, pure CSS via :hover + :not().
+   ============================================= */
+.skills-constellation {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin-top: 48px;
+  border-top: 1px solid var(--line-light);
   padding-top: 48px;
 }
 
-.skills-heading {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 22px;
+.constellation-group {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
 }
 
-.skills-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.skills-constellation:hover .constellation-group:not(:hover) {
+  opacity: 0.25;
 }
 
-.skill-item {
-  font-family: var(--font-display);
-  font-size: 22px;
-  letter-spacing: 0.01em;
-  color: var(--bg);
-  transition: opacity 0.3s ease, color 0.3s ease;
+.constellation-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
 
-.skills-list:hover .skill-item {
-  opacity: 0.35;
+.constellation-lines line {
+  stroke: var(--line-light-strong);
+  stroke-width: 1;
+  transition: stroke 0.35s ease;
 }
 
-.skills-list .skill-item:hover {
-  opacity: 1;
+.constellation-group:hover .constellation-lines line {
+  stroke: var(--gold);
+}
+
+.constellation-center,
+.constellation-hub,
+.constellation-tool {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-family: var(--font-nav);
+}
+
+.constellation-center {
+  left: 50%;
+  top: 50%;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(20px, 2.4vw, 32px);
+  color: var(--bg-muted);
+  z-index: 1;
+}
+
+.constellation-hub {
+  font-weight: 700;
+  font-size: clamp(13px, 1.3vw, 17px);
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  pointer-events: auto;
+}
+
+.constellation-tool {
+  pointer-events: auto;
+  font-weight: 500;
+  font-size: clamp(12px, 1.1vw, 15px);
+  color: var(--bg-soft);
+  cursor: default;
+  transition: color 0.25s ease;
+}
+
+.constellation-tool:hover {
   color: var(--gold);
 }
 
@@ -596,12 +750,12 @@ section {
    ============================================= */
 .services-list,
 .experience .section-container {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-light);
 }
 
 .service-item,
 .exp-item {
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--line-light);
 }
 
 .service-item summary,
@@ -652,7 +806,7 @@ section {
 .service-plus::after {
   content: "";
   position: absolute;
-  background: var(--ink);
+  background: var(--bg);
   transition: transform 0.3s ease;
 }
 
@@ -664,7 +818,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 .service-desc {
   font-size: 14px;
   font-weight: 300;
-  color: var(--ink-soft);
+  color: var(--bg-soft);
   max-width: 520px;
   line-height: 1.8;
   padding: 0 0 32px 60px;
@@ -777,8 +931,8 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 
 .work-visual {
   aspect-ratio: 16 / 11;
-  border: 1px solid var(--line);
-  background: linear-gradient(135deg, var(--bg-alt), var(--bg));
+  border: 1px solid var(--line-light);
+  background: linear-gradient(135deg, var(--ink-alt), var(--ink));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -790,7 +944,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 .work-visual-mark {
   font-family: var(--font-display);
   font-size: clamp(80px, 10vw, 140px);
-  color: var(--line-strong);
+  color: var(--line-light-strong);
   letter-spacing: 0.04em;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
 }
@@ -829,8 +983,8 @@ details[open] .service-plus::after { transform: rotate(90deg); }
   font-family: var(--font-body);
   font-size: 10px;
   font-weight: 400;
-  color: var(--ink-soft);
-  border: 1px solid var(--line);
+  color: var(--bg-soft);
+  border: 1px solid var(--line-light);
   border-radius: 100px;
   padding: 5px 12px;
   letter-spacing: 0.04em;
@@ -839,7 +993,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 .work-desc {
   font-size: 14px;
   font-weight: 300;
-  color: var(--ink-soft);
+  color: var(--bg-soft);
   line-height: 1.85;
   margin-bottom: 18px;
   max-width: 460px;
@@ -849,7 +1003,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
   font-family: var(--font-body);
   font-size: 11px;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: var(--bg-muted);
 }
 
 /* =============================================
@@ -871,8 +1025,8 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 
 .design-visual {
   aspect-ratio: 4 / 3;
-  border: 1px solid var(--line);
-  background: linear-gradient(155deg, var(--gold) 0%, var(--bg-alt) 60%);
+  border: 1px solid var(--line-light);
+  background: linear-gradient(155deg, var(--gold) 0%, var(--ink-alt) 60%);
   opacity: 0.9;
   margin-bottom: 20px;
   overflow: hidden;
@@ -894,7 +1048,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--bg-muted);
   margin-bottom: 10px;
 }
 
@@ -916,7 +1070,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 .design-card-desc {
   font-size: 13px;
   font-weight: 300;
-  color: var(--ink-soft);
+  color: var(--bg-soft);
   line-height: 1.75;
   max-width: 460px;
 }
@@ -940,14 +1094,14 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 .exp-company {
   font-family: var(--font-body);
   font-size: 12px;
-  color: var(--muted);
+  color: var(--bg-muted);
   letter-spacing: 0.06em;
 }
 
 .exp-period {
   font-family: var(--font-body);
   font-size: 12px;
-  color: var(--muted);
+  color: var(--bg-muted);
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
@@ -960,7 +1114,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 .exp-body p {
   font-size: 14px;
   font-weight: 300;
-  color: var(--ink-soft);
+  color: var(--bg-soft);
   line-height: 1.85;
   margin-bottom: 18px;
 }
@@ -1009,7 +1163,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--ink-soft);
+  color: var(--bg-soft);
   transition: color 0.3s ease;
 }
 
@@ -1036,16 +1190,16 @@ details[open] .service-plus::after { transform: rotate(90deg); }
   font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--bg-muted);
 }
 
 .form-group input,
 .form-group textarea {
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-light-strong);
   padding: 10px 2px;
-  color: var(--ink);
+  color: var(--bg);
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 300;
@@ -1056,7 +1210,7 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: var(--muted);
+  color: var(--bg-muted);
 }
 
 .form-group input:focus,
@@ -1073,7 +1227,8 @@ details[open] .service-plus::after { transform: rotate(90deg); }
    FOOTER
    ============================================= */
 footer {
-  background-color: var(--bg-alt);
+  background-color: var(--ink-alt);
+  color: var(--bg);
   padding: 40px 50px;
 }
 
@@ -1101,7 +1256,7 @@ footer {
 .footer-role {
   font-family: var(--font-body);
   font-size: 11px;
-  color: var(--muted);
+  color: var(--bg-muted);
   letter-spacing: 0.05em;
 }
 
@@ -1111,7 +1266,7 @@ footer {
 }
 
 .footer-links a {
-  color: var(--ink-soft);
+  color: var(--bg-soft);
   font-size: 15px;
   transition: color 0.3s ease;
 }
@@ -1126,13 +1281,13 @@ footer {
   gap: 24px;
   font-family: var(--font-body);
   font-size: 11px;
-  color: var(--muted);
+  color: var(--bg-muted);
   letter-spacing: 0.05em;
 }
 
 .footer-top {
   text-decoration: none;
-  color: var(--ink-soft);
+  color: var(--bg-soft);
   transition: color 0.3s ease;
 }
 
@@ -1242,8 +1397,6 @@ footer {
    TABLET PORTRAIT / MOBILE  ≤ 768px
    ============================================= */
 @media (max-width: 768px) {
-  .hamburger { display: flex; }
-
   nav { position: relative; padding: 14px 24px; }
 
   .nav-links {

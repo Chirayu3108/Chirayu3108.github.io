@@ -15,13 +15,14 @@ inspo/            — design inspiration images
 
 ## Design System
 
-Editorial, light, typography-led — inspired by dzinrstudio.com's pacing/hierarchy, not its branding.
+Editorial, dark, typography-led — inspired by dzinrstudio.com's pacing/hierarchy, not its branding. Every section shares the same dark `--ink` background; there are no light sections left on the page.
 
 **Color palette**
-- Background: `#f2efe9` (warm off-white), alt/card bg `#eae4d8`
-- Ink (text): `#141414`, soft `#5c5a54`, muted `#8a8781`
+- Ink (background): `#141414`, alt/footer surface `#1c1c1c`
+- Off-white (text): `#f2efe9` (`--bg`), soft `rgba(242,239,233,.65)` (`--bg-soft`), muted `rgba(242,239,233,.45)` (`--bg-muted`)
 - Accent/gold: `#ad8f66` — used sparingly (numbers, underlines, one hover state), never as a background
-- Hairlines: `rgba(20,20,20,.12)` / strong `rgba(20,20,20,.4)`
+- Hairlines on dark: `rgba(242,239,233,.15)` (`--line-light`) / strong `rgba(242,239,233,.35)` (`--line-light-strong`)
+- The original light-on-dark tokens (`--bg` as a background, `--ink`/`--ink-soft`/`--muted`/`--line`/`--line-strong`/`--bg-alt`) still exist for the few deliberately-light elements (the `.btn-pill` CTA, the dormant mobile dropdown) — don't reach for them when styling a new section, use the dark-theme tokens above instead
 - All defined as CSS custom properties on `:root` in `style.css`
 
 **Typography**

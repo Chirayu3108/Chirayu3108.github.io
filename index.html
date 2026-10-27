@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  <header id="site-header">
+  <header id="site-header" class="is-home">
     <nav>
       <a href="#home" class="logo">CA</a>
       <ul class="nav-links" id="nav-links">
@@ -63,6 +63,24 @@
       </button>
     </nav>
   </header>
+
+  <!-- FULLSCREEN NAV OVERLAY — opened by the hamburger off the landing
+       page; a sibling of header (not nested inside it) so its z-index
+       compares directly against header/banner instead of being trapped
+       inside header's own stacking context -->
+  <div class="nav-overlay" id="nav-overlay">
+    <ul class="nav-overlay-links">
+      <li><a href="#about" data-nav="about">About</a></li>
+      <li><a href="#experience" data-nav="experience">Work</a></li>
+      <li><a href="#work" data-nav="work">Projects</a></li>
+      <li><a href="#design" data-nav="design">Designs</a></li>
+    </ul>
+    <div class="nav-overlay-extra">
+      <a href="https://github.com/Chirayu3108" target="_blank" rel="noopener" class="nav-extra-link">Github</a>
+      <a href="https://www.linkedin.com/in/chirayu-ahuja-532078275/" target="_blank" rel="noopener" class="nav-extra-link">Linkedin</a>
+      <a href="#contact" class="nav-extra-link">Let's Talk</a>
+    </div>
+  </div>
 
   <main>
 
@@ -106,42 +124,12 @@
           <p>I like projects that force me to learn something new, and I care as much about how an interface reads as I do about what's running underneath it. Outside of that: football, tennis, and editing video.</p>
         </div>
 
-        <div class="skills">
-          <div class="skills-col reveal">
-            <h3 class="skills-heading">Development</h3>
-            <ul class="skills-list">
-              <li class="skill-item">Python</li>
-              <li class="skill-item">Java</li>
-              <li class="skill-item">JavaScript</li>
-              <li class="skill-item">TypeScript</li>
-              <li class="skill-item">React</li>
-              <li class="skill-item">FastAPI</li>
-              <li class="skill-item">SQL / PostgreSQL</li>
-              <li class="skill-item">Docker</li>
-              <li class="skill-item">Firebase</li>
-              <li class="skill-item">Git</li>
-            </ul>
-          </div>
-          <div class="skills-col reveal">
-            <h3 class="skills-heading">Design</h3>
-            <ul class="skills-list">
-              <li class="skill-item">Figma</li>
-              <li class="skill-item">Webflow</li>
-              <li class="skill-item">Adobe Creative Cloud</li>
-              <li class="skill-item">InDesign</li>
-              <li class="skill-item">Blender</li>
-            </ul>
-          </div>
-          <div class="skills-col reveal">
-            <h3 class="skills-heading">Creative</h3>
-            <ul class="skills-list">
-              <li class="skill-item">Video Editing</li>
-              <li class="skill-item">Photography</li>
-              <li class="skill-item">Motion Design</li>
-              <li class="skill-item">Visual Storytelling</li>
-            </ul>
-          </div>
-        </div>
+        <!-- SKILLS — constellation: tools as nodes scattered around a
+             center point, connected by thin lines to their category hub.
+             Rendered from the skillGroups array in script.js (same
+             data-driven pattern as the Design Work gallery below) since
+             node positions are computed, not hand-placed. -->
+        <div class="skills-constellation" id="skills-constellation"></div>
       </div>
     </section>
 
