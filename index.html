@@ -112,68 +112,69 @@
     <!-- ABOUT -->
     <section class="about" id="about" data-nav="about">
       <div class="section-container">
-        <div class="section-header reveal">
+        <div class="section-header big-header reveal">
           <span class="section-eyebrow">Who I Am</span>
-          <h2 class="section-title">About</h2>
+          <h2 class="section-title big-title"><span class="title-mask"><span class="title-pop">About</span></span></h2>
+          <span class="big-line" aria-hidden="true"></span>
         </div>
 
-        <p class="about-lead reveal">I build software, design the interfaces around it, and care about how the two feel together.</p>
+        <div class="about-grid">
+          <p class="about-lead reveal">I build software, design the interfaces around it, and care about <em>how the two feel together.</em></p>
 
-        <div class="about-body reveal">
-          <p>I'm a Computer Science student at the University of British Columbia Okanagan, working across full-stack development, AI-powered systems, and data analytics — and across Figma, Webflow, and layout design on the side. Most of what I build lives at the point where those two skill sets meet.</p>
-          <p>I like projects that force me to learn something new, and I care as much about how an interface reads as I do about what's running underneath it. Outside of that: football, tennis, and editing video.</p>
+          <div class="about-body reveal">
+            <p>I'm a Computer Science student at the University of British Columbia Okanagan, working across full-stack development, AI-powered systems, and data analytics — and across Figma, Webflow, and layout design on the side. Most of what I build lives at the point where those two skill sets meet.</p>
+            <p>I like projects that force me to learn something new, and I care as much about how an interface reads as I do about what's running underneath it. Outside of that: football, tennis, and editing video.</p>
+          </div>
         </div>
 
-        <!-- SKILLS — constellation: tools as nodes scattered around a
-             center point, connected by thin lines to their category hub.
-             Rendered from the skillGroups array in script.js (same
-             data-driven pattern as the Design Work gallery below) since
-             node positions are computed, not hand-placed. -->
-        <div class="skills-constellation" id="skills-constellation"></div>
+        <dl class="about-facts reveal">
+          <div class="about-fact"><dt>Studying</dt><dd>Computer Science, UBC Okanagan</dd></div>
+          <div class="about-fact"><dt>Building</dt><dd>Full-stack apps, AI systems, data analytics</dd></div>
+          <div class="about-fact"><dt>Designing</dt><dd>Figma, Webflow, editorial layout</dd></div>
+          <div class="about-fact"><dt>Off-screen</dt><dd>Football, tennis, video editing</dd></div>
+        </dl>
       </div>
     </section>
 
     <!-- SERVICES -->
-    <section class="services" id="services">
+    <section class="services-intro" id="services">
       <div class="section-container">
-        <div class="section-header reveal">
+        <div class="section-header big-header reveal">
           <span class="section-eyebrow">What I Do</span>
-          <h2 class="section-title">Services</h2>
+          <h2 class="section-title big-title"><span class="title-mask"><span class="title-pop">Services</span></span></h2>
+          <span class="big-line" aria-hidden="true"></span>
+          <div class="big-cta"><a href="#contact" class="text-link">Let's Talk <i class="fas fa-arrow-right"></i></a></div>
         </div>
+      </div>
+    </section>
 
-        <div class="services-list">
-          <details class="service-item reveal" open>
-            <summary>
-              <span class="service-num">01</span>
-              <span class="service-title">Software Development</span>
-              <span class="service-plus" aria-hidden="true"></span>
-            </summary>
-            <p class="service-desc">Full-stack applications, APIs, databases and production-ready systems.</p>
-          </details>
-          <details class="service-item reveal">
-            <summary>
-              <span class="service-num">02</span>
-              <span class="service-title">UI / UX Design</span>
-              <span class="service-plus" aria-hidden="true"></span>
-            </summary>
-            <p class="service-desc">Interfaces, user flows, wireframes and visual systems.</p>
-          </details>
-          <details class="service-item reveal">
-            <summary>
-              <span class="service-num">03</span>
-              <span class="service-title">Web Design &amp; Development</span>
-              <span class="service-plus" aria-hidden="true"></span>
-            </summary>
-            <p class="service-desc">Responsive websites, interactive experiences and frontend development.</p>
-          </details>
-          <details class="service-item reveal">
-            <summary>
-              <span class="service-num">04</span>
-              <span class="service-title">Creative Development</span>
-              <span class="service-plus" aria-hidden="true"></span>
-            </summary>
-            <p class="service-desc">Interactive experiences, motion, visual storytelling and experimental interfaces.</p>
-          </details>
+    <section class="services">
+      <div class="services-track">
+        <div class="services-pin">
+          <div class="section-container">
+            <div class="services-grid">
+              <article class="service-card" data-scroll-card>
+                <i class="fa-solid fa-code service-icon" aria-hidden="true"></i>
+                <h3 class="service-title">Software<br>Development</h3>
+                <p class="service-desc">Full-stack applications, APIs, databases and production-ready systems.</p>
+              </article>
+              <article class="service-card" data-scroll-card>
+                <i class="fa-solid fa-pen-nib service-icon" aria-hidden="true"></i>
+                <h3 class="service-title">UI / UX<br>Design</h3>
+                <p class="service-desc">Interfaces, user flows, wireframes and visual systems.</p>
+              </article>
+              <article class="service-card" data-scroll-card>
+                <i class="fa-solid fa-window-maximize service-icon" aria-hidden="true"></i>
+                <h3 class="service-title">Web Design<br>&amp; Development</h3>
+                <p class="service-desc">Responsive websites, interactive experiences and frontend development.</p>
+              </article>
+              <article class="service-card" data-scroll-card>
+                <i class="fa-solid fa-wand-magic-sparkles service-icon" aria-hidden="true"></i>
+                <h3 class="service-title">Creative<br>Development</h3>
+                <p class="service-desc">Interactive experiences, motion, visual storytelling and experimental interfaces.</p>
+              </article>
+            </div>
+          </div>
         </div>
       </div>
     </section>

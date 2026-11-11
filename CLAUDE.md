@@ -36,18 +36,18 @@ Editorial, dark, typography-led — inspired by dzinrstudio.com's pacing/hierarc
 ## Page Sections (in order)
 1. **Hero** (`#home`) — no photo. Huge stacked type ("Software / Developer / & Designer"), staggered line-reveal on load, scroll cue. Text/motion *is* the visual identity.
 2. **Marquee** — CSS-only infinite horizontal strip, paused under reduced-motion
-3. **About** (`#about`) — editorial lead statement + condensed bio + 3-column typographic skills list (Development/Design/Creative), hover dims siblings
-4. **Services** (`#services`) — 4 numbered `<details>` items ("What I Do"), native expand-on-click
+3. **About** (`#about`) — `.big-header` "About" title, then two-column: big serif lead (gold italic `<em>` accent, revealed word by word — script.js splits it into `.about-word` spans) beside the bio; then a 4-item `.about-facts` row (hairline top, gold line draws on hover)
+4. **Services** (`#services` on `.services-intro`: `.big-header` "Services" + Let's Talk `.big-cta`; then `.services` holds the cards) — 4 cards in a row (Font Awesome icon on top, gold), 2-col ≤992px, 1-col ≤480px. Above 992px the section pins (`.services-track` > sticky `.services-pin`) and each `[data-scroll-card]` card is scroll-driven (staggered by `STAGGER`): rises from below, floats up and back, exits off the top; cards glide (lerp) toward their scroll target
 5. **Statement** — centered "Code + Design = Experience" typographic break
 6. **Work** (`#work`) — 3 real software projects as large numbered editorial blocks with a placeholder visual (`.work-visual`) swappable for a real screenshot later
 7. **Design Work** (`#design`) — rendered from the `designWork` array in `script.js`; add an object to add a project, first item renders large
-8. **Experience** (`#experience`) — same `<details>` pattern as Services, 1 entry (The Phoenix News)
+8. **Experience** (`#experience`) — `<details>` expand-on-click list, 1 entry (The Phoenix News)
 9. **Contact** (`#contact`) — big statement + prominent email, mailto form kept but visually secondary
 10. **Footer** — identity + icon links + back-to-top
 
 ## Responsive Breakpoints
 - `≤ 1200px` — work items collapse to a single column
-- `≤ 992px` — skills grid goes 2-col, design gallery goes 1-col, contact grid goes single-column
+- `≤ 992px` — about grid stacks, about facts go 2-col, design gallery goes 1-col, contact grid goes single-column
 - `≤ 768px` — hamburger nav replaces link row, section padding/font reductions, scroll cue hidden
 - `≤ 480px` — smallest font/padding sizes
 
@@ -64,8 +64,8 @@ Editorial, dark, typography-led — inspired by dzinrstudio.com's pacing/hierarc
 - CSS is a single file; add new section styles in order after the existing section they belong to
 - Responsive styles live at the bottom of `style.css` in four `@media` blocks (plus one `prefers-reduced-motion` block above them) — add new responsive overrides inside the existing blocks, not as new blocks
 - All section containers cap at `max-width: 1180px` via `.section-container`, centered
-- `.section-header` (eyebrow + Bebas title) is the shared section header pattern — reuse it for any new section
-- The `<details>/<summary>` pattern (Services, Experience) is the standard expand-on-click component — prefer it over custom JS toggle state for any similar list
+- `.section-header` (eyebrow + Bebas title) is the shared section header pattern — reuse it for any new section. Add `.big-header` for the oversized variant (About, Services): title wrapped in `.title-mask > .title-pop` pops up from behind a clip, then a gold `.big-line` draws under it (ends where the word ends), then an optional `.big-cta` rises in beside the line — all on the shared `.reveal` `.in-view`
+- The `<details>/<summary>` pattern (Experience) is the standard expand-on-click component — prefer it over custom JS toggle state for any similar list
 - Any new non-trivial animation should register with the existing `.reveal` observer or the existing cursor/`data-cursor` mechanism rather than adding a new observer or event listener
 
 ## Contact

@@ -171,91 +171,149 @@ if (statementSection && statementHeadline) {
 }
 
 /* ============================================
-   SKILLS — constellation, rendered from this data
-   array (same pattern as designWork below). Each
-   category radiates from a shared center at its own
-   angle, 120° apart, so a category's tools fan out
-   in their own sector with no overlap between
-   groups; node positions are computed, not hand-
-   placed, since the item counts differ per category.
+   SERVICES — pinned scroll: the section holds on
+   screen while each [data-scroll-card] card
+   1) rises from below the screen into its slot
+   2) floats a little up and back down
+   3) speeds up and exits off the top
+   Each card starts a little after the one before.
+   Wide screens only — below 993px the grid wraps
+   to 2/1 columns and won't fit in one pinned view.
    ============================================ */
-const skillGroups = [
-  { name: "Development", angle: 205, tools: ["Python", "Java", "JavaScript", "TypeScript", "React", "FastAPI", "SQL / PostgreSQL", "Docker", "Firebase", "Git"] },
-  { name: "Design", angle: 325, tools: ["Figma", "Webflow", "Adobe Creative Cloud", "InDesign", "Blender"] },
-  { name: "Creative", angle: 85, tools: ["Video Editing", "Photography", "Motion Design", "Visual Storytelling"] },
-];
+const servicesTrack = document.querySelector(".services-track");
+const servicesPin = document.querySelector(".services-pin");
+const scrollCards = [...document.querySelectorAll("[data-scroll-card]")];
 
-const constellationEl = document.getElementById("skills-constellation");
+if (servicesTrack && servicesPin && scrollCards.length && !reducedMotion) {
+  const wideQuery = window.matchMedia("(min-width: 993px)");
+  const SCROLL_BUDGET_VH = 2; // pinned scroll length, in viewport heights
+  const STAGGER = 0.08; // fraction of total progress each card starts after the previous one
+  const ENTER_END = 0.35; // card's own progress where it reaches its slot
+  const FLOAT_END = 0.6; // card's own progress where the float ends and the exit begins
+  const FLOAT_PX = 28; // how far above its slot the card floats before settling back
+  const GLIDE = 0.1; // per-frame share of the gap to the scroll target closed — lower = floatier
 
-if (constellationEl) {
-  // Everything below lives in one 0–100 percentage space, for both the
-  // SVG viewBox and the nodes' CSS left/top — so a position never needs
-  // converting between the two. The container is wider than it is tall,
-  // so an equal x/y radius naturally renders as a wide ellipse, which
-  // suits the landscape layout rather than fighting it.
-  const CENTER = { x: 50, y: 50 };
-  const HUB_RADIUS = 20;
-  const TOOL_RADIUS = 42;
-  const MAX_SPREAD = 110; // degrees — stays within each group's 120° sector
+  const easeOut = (t) => 1 - (1 - t) ** 3;
+  const easeIn = (t) => t ** 2;
+  // 0 → 1 → 0 with no velocity at either end, so the float blends into the enter and exit
+  const bob = (t) => (1 - Math.cos(2 * Math.PI * t)) / 2;
+  const stage = (p, from, to) => Math.min(1, Math.max(0, (p - from) / (to - from)));
 
-  const polar = (angleDeg, radius) => {
-    const rad = (angleDeg * Math.PI) / 180;
-    return { x: CENTER.x + radius * Math.cos(rad), y: CENTER.y + radius * Math.sin(rad) };
-  };
+  // each card's own progress runs over this much of the total, so the last one still finishes at 1
+  const cardSpan = 1 - STAGGER * (scrollCards.length - 1);
 
-  const line = (x1, y1, x2, y2) => {
-    const el = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    el.setAttribute("x1", x1);
-    el.setAttribute("y1", y1);
-    el.setAttribute("x2", x2);
-    el.setAttribute("y2", y2);
-    return el;
-  };
+  let pinned = false;
+  let startYs = []; // per card: top edge sits at the bottom of the pinned screen
+  let exitYs = []; // per card: bottom edge sits above the top of the pinned screen
+  let currentYs = scrollCards.map(() => 0); // where each card is drawn, eased toward its target
 
-  skillGroups.forEach((group) => {
-    const groupEl = document.createElement("div");
-    groupEl.className = "constellation-group";
+  function layoutServices() {
+    pinned = wideQuery.matches;
+    servicesTrack.classList.toggle("is-pinned", pinned);
+    servicesTrack.style.height = pinned ? `${window.innerHeight * (1 + SCROLL_BUDGET_VH)}px` : "";
+    if (!pinned) {
+      scrollCards.forEach((card) => (card.style.transform = ""));
+      return;
+    }
+    // offsetTop ignores transforms, so this is each card's resting slot within the pin
+    startYs = scrollCards.map((card) => servicesPin.offsetHeight - card.offsetTop);
+    exitYs = scrollCards.map((card) => -(card.offsetTop + card.offsetHeight));
+  }
 
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("class", "constellation-lines");
-    svg.setAttribute("viewBox", "0 0 100 100");
-    svg.setAttribute("preserveAspectRatio", "none");
+  function targetYs() {
+    // Progress starts as soon as the track enters from the bottom of the
+    // screen (not once it pins), so the cards rise in right under the
+    // Services heading instead of after a screen of empty space.
+    const rect = servicesTrack.getBoundingClientRect();
+    const progress = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / rect.height));
 
-    const hub = polar(group.angle, HUB_RADIUS);
-    svg.appendChild(line(CENTER.x, CENTER.y, hub.x, hub.y));
-
-    const hubEl = document.createElement("span");
-    hubEl.className = "constellation-hub";
-    hubEl.style.left = `${hub.x}%`;
-    hubEl.style.top = `${hub.y}%`;
-    hubEl.textContent = group.name;
-    groupEl.appendChild(hubEl);
-
-    const spread = Math.min(MAX_SPREAD, group.tools.length * 13);
-    group.tools.forEach((tool, i) => {
-      const t = group.tools.length > 1 ? i / (group.tools.length - 1) : 0.5;
-      const toolAngle = group.angle - spread / 2 + spread * t;
-      const radius = TOOL_RADIUS + ((i % 3) - 1) * 4;
-      const pos = polar(toolAngle, radius);
-
-      svg.appendChild(line(hub.x, hub.y, pos.x, pos.y));
-
-      const toolEl = document.createElement("span");
-      toolEl.className = "constellation-tool";
-      toolEl.style.left = `${pos.x}%`;
-      toolEl.style.top = `${pos.y}%`;
-      toolEl.textContent = tool;
-      groupEl.appendChild(toolEl);
+    return scrollCards.map((card, i) => {
+      const p = stage(progress, i * STAGGER, i * STAGGER + cardSpan);
+      if (p <= ENTER_END) return startYs[i] * (1 - easeOut(stage(p, 0, ENTER_END)));
+      if (p <= FLOAT_END) return -FLOAT_PX * bob(stage(p, ENTER_END, FLOAT_END));
+      return exitYs[i] * easeIn(stage(p, FLOAT_END, 1));
     });
+  }
 
-    groupEl.insertBefore(svg, groupEl.firstChild);
-    constellationEl.appendChild(groupEl);
+  function draw() {
+    scrollCards.forEach((card, i) => (card.style.transform = `translateY(${currentYs[i]}px)`));
+  }
+
+  // Cards chase their scroll target a fraction per frame, smoothing out
+  // wheel-step jumps; the loop stops itself once every card has caught up.
+  let gliding = false;
+  function glide() {
+    if (!pinned) {
+      gliding = false;
+      return;
+    }
+    const targets = targetYs();
+    let moving = false;
+    currentYs = currentYs.map((y, i) => {
+      const next = y + (targets[i] - y) * GLIDE;
+      if (Math.abs(targets[i] - next) > 0.1) {
+        moving = true;
+        return next;
+      }
+      return targets[i];
+    });
+    draw();
+    gliding = moving;
+    if (moving) requestAnimationFrame(glide);
+  }
+
+  function startGlide() {
+    if (gliding) return;
+    gliding = true;
+    requestAnimationFrame(glide);
+  }
+
+  // jump straight to the target, no glide (first paint, resize)
+  function snapServices() {
+    if (!pinned) return;
+    currentYs = targetYs();
+    draw();
+  }
+
+  layoutServices();
+  snapServices();
+
+  window.addEventListener("scroll", startGlide, { passive: true });
+
+  window.addEventListener("resize", () => {
+    layoutServices();
+    snapServices();
   });
+}
 
-  const centerEl = document.createElement("span");
-  centerEl.className = "constellation-center";
-  centerEl.textContent = "CA";
-  constellationEl.appendChild(centerEl);
+/* ============================================
+   ABOUT LEAD — split into per-word spans (keeping
+   the <em> accent) so the shared .reveal observer
+   can light it up word by word via CSS delays.
+   ============================================ */
+const aboutLead = document.querySelector(".about-lead");
+if (aboutLead) {
+  let wordIndex = 0;
+  const splitWords = (node) => {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      [...node.childNodes].forEach(splitWords);
+      return;
+    }
+    const frag = document.createDocumentFragment();
+    node.textContent.split(/(\s+)/).forEach((part) => {
+      if (!part.trim()) {
+        frag.append(part);
+        return;
+      }
+      const word = document.createElement("span");
+      word.className = "about-word";
+      word.textContent = part;
+      word.style.transitionDelay = `${wordIndex++ * 0.05}s`;
+      frag.append(word);
+    });
+    node.replaceWith(frag);
+  };
+  [...aboutLead.childNodes].forEach(splitWords);
 }
 
 /* ============================================
