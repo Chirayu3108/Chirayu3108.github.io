@@ -182,58 +182,22 @@
     <!-- SELECTED WORK -->
     <section class="work" id="work" data-nav="work">
       <div class="section-container">
-        <div class="section-header reveal">
+        <div class="section-header big-header reveal">
           <span class="section-eyebrow">Selected Work</span>
-          <h2 class="section-title">Projects</h2>
+          <h2 class="section-title big-title"><span class="title-mask"><span class="title-pop">Projects</span></span></h2>
+          <span class="big-line" aria-hidden="true"></span>
         </div>
+      </div>
 
-        <div class="work-list">
-
-          <article class="work-item reveal">
-            <div class="work-visual">
-              <span class="work-visual-mark">CH</span>
-            </div>
-            <div class="work-info">
-              <span class="work-number">01</span>
-              <h3 class="work-title">Campus Housing Finder</h3>
-              <div class="work-tags">
-                <span>Java</span><span>Android Studio</span><span>Firebase</span><span>Google Maps API</span>
-              </div>
-              <p class="work-desc">A mobile application built to help university students find off-campus housing more efficiently. Landlords post listings; students browse, save favorites, and view them on an interactive map, with Firebase handling real-time updates and authentication.</p>
-              <span class="work-period">Sep – Dec 2025</span>
-            </div>
-          </article>
-
-          <article class="work-item reveal">
-            <div class="work-visual">
-              <span class="work-visual-mark">FD</span>
-            </div>
-            <div class="work-info">
-              <span class="work-number">02</span>
-              <h3 class="work-title">Food Delivery Platform</h3>
-              <div class="work-tags">
-                <span>FastAPI</span><span>React</span><span>PostgreSQL</span><span>Docker</span>
-              </div>
-              <p class="work-desc">A full-stack platform connecting customers, restaurants, and admins — JWT auth, role-based access, an admin dashboard, and a containerized microservice architecture with automated deployment. Restaurant data feeds a Pandas-built analytics dashboard.</p>
-              <span class="work-period">Jan – Apr 2026</span>
-            </div>
-          </article>
-
-          <article class="work-item reveal">
-            <div class="work-visual">
-              <span class="work-visual-mark">AI</span>
-            </div>
-            <div class="work-info">
-              <span class="work-number">03</span>
-              <h3 class="work-title">AI Study Assistant</h3>
-              <div class="work-tags">
-                <span>LangChain</span><span>ChromaDB</span><span>Streamlit</span><span>Groq</span>
-              </div>
-              <p class="work-desc">A RAG-based study assistant students can question in natural language about their own uploaded materials. Retrieval-augmented generation grounds every answer in the source documents, with citations and local vector storage in ChromaDB.</p>
-              <span class="work-period">Jun 2026</span>
-            </div>
-          </article>
-
+      <!-- Panels are rendered from the projects array in script.js. On wide
+           screens the track pins and the rail slides horizontally on scroll. -->
+      <div class="work-track">
+        <div class="work-pin">
+          <div class="work-rail" id="work-rail"></div>
+          <div class="work-hud" aria-hidden="true">
+            <span class="work-count"><span id="work-current">01</span> / <span id="work-total">01</span></span>
+            <span class="work-progress"><span class="work-progress-fill" id="work-progress-fill"></span></span>
+          </div>
         </div>
       </div>
     </section>

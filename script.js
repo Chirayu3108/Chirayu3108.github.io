@@ -317,6 +317,167 @@ if (aboutLead) {
 }
 
 /* ============================================
+   PROJECTS — data-driven panels. Add an object to
+   add a project. Optional fields: `link` (adds a
+   "View project" link) and `image` (a screenshot
+   path that replaces the motion graphic).
+   ============================================ */
+const projects = [
+  {
+    title: "Campus Housing Finder",
+    initials: "CH",
+    period: "Sep – Dec 2025",
+    tags: ["Java", "Android Studio", "Firebase", "Google Maps API"],
+    description: "A mobile application built to help university students find off-campus housing more efficiently. Landlords post listings; students browse, save favorites, and view them on an interactive map, with Firebase handling real-time updates and authentication.",
+  },
+  {
+    title: "Food Delivery Platform",
+    initials: "FD",
+    period: "Jan – Apr 2026",
+    tags: ["FastAPI", "React", "PostgreSQL", "Docker"],
+    description: "A full-stack platform connecting customers, restaurants, and admins — JWT auth, role-based access, an admin dashboard, and a containerized microservice architecture with automated deployment. Restaurant data feeds a Pandas-built analytics dashboard.",
+  },
+  {
+    title: "AI Study Assistant",
+    initials: "AI",
+    period: "Jun 2026",
+    tags: ["LangChain", "ChromaDB", "Streamlit", "Groq"],
+    description: "A RAG-based study assistant students can question in natural language about their own uploaded materials. Retrieval-augmented generation grounds every answer in the source documents, with citations and local vector storage in ChromaDB.",
+  },
+];
+
+const workRail = document.getElementById("work-rail");
+if (workRail) {
+  projects.forEach((project, i) => {
+    const panel = document.createElement("article");
+    panel.className = "work-panel reveal";
+    const visual = project.image
+      ? `<img src="${project.image}" alt="${project.title} screenshot" loading="lazy">`
+      : `<div class="work-visual-inner" aria-hidden="true">
+           <span class="work-ring"></span><span class="work-ring"></span><span class="work-ring"></span>
+           <span class="work-mark">${project.initials}</span>
+         </div>`;
+    const link = project.link
+      ? `<a class="text-link" href="${project.link}" target="_blank" rel="noopener">View project <i class="fas fa-arrow-right"></i></a>`
+      : "";
+    panel.innerHTML = `
+      <div class="work-visual" style="--phase: ${i}">${visual}</div>
+      <div class="work-info">
+        <span class="work-number">${String(i + 1).padStart(2, "0")}</span>
+        <h3 class="work-title"><span class="title-mask"><span class="title-pop">${project.title}</span></span></h3>
+        <div class="work-tags">${project.tags.map((tag) => `<span>${tag}</span>`).join("")}</div>
+        <p class="work-desc">${project.description}</p>
+        <div class="work-meta"><span class="work-period">${project.period}</span>${link}</div>
+      </div>
+    `;
+    workRail.appendChild(panel);
+  });
+}
+
+/* ============================================
+   PROJECTS — horizontal pinned scroll: the track
+   pins and the rail slides left as you scroll
+   down, gliding toward its target like the
+   Services cards. Each panel's motion graphic
+   shifts slightly against the slide (parallax).
+   Wide screens only; otherwise the panels stack.
+   ============================================ */
+const workTrack = document.querySelector(".work-track");
+const workPanels = workRail ? [...workRail.querySelectorAll(".work-panel")] : [];
+
+if (workTrack && workPanels.length && !reducedMotion) {
+  const wideQuery = window.matchMedia("(min-width: 993px)");
+  const PARALLAX = 0.06; // how far each visual drifts against the slide, as a share of its distance from center
+  const GLIDE = 0.1; // per-frame share of the gap to the scroll target closed — lower = floatier
+
+  const currentEl = document.getElementById("work-current");
+  const totalEl = document.getElementById("work-total");
+  const fillEl = document.getElementById("work-progress-fill");
+  const inners = workPanels.map((panel) => panel.querySelector(".work-visual-inner"));
+  totalEl.textContent = String(workPanels.length).padStart(2, "0");
+
+  let pinned = false;
+  let maxX = 0; // how far the rail slides, in px
+  let centers = []; // each panel's center within the rail, in px
+  let currentX = 0;
+
+  function layoutWork() {
+    pinned = wideQuery.matches;
+    workTrack.classList.toggle("is-pinned", pinned);
+    if (!pinned) {
+      workTrack.style.height = "";
+      workRail.style.transform = "";
+      inners.forEach((inner) => inner && (inner.style.transform = ""));
+      return;
+    }
+    maxX = Math.max(0, workRail.scrollWidth - window.innerWidth);
+    // one px of vertical scroll per px of horizontal travel
+    workTrack.style.height = `${window.innerHeight + maxX}px`;
+    centers = workPanels.map((panel) => panel.offsetLeft + panel.offsetWidth / 2);
+  }
+
+  function targetX() {
+    const rect = workTrack.getBoundingClientRect();
+    const scrollDistance = rect.height - window.innerHeight;
+    const progress = scrollDistance > 0 ? Math.min(1, Math.max(0, -rect.top / scrollDistance)) : 0;
+    return -progress * maxX;
+  }
+
+  function drawWork() {
+    workRail.style.transform = `translateX(${currentX}px)`;
+    const progress = maxX ? -currentX / maxX : 0;
+    fillEl.style.transform = `scaleX(${progress})`;
+    currentEl.textContent = String(Math.round(progress * (workPanels.length - 1)) + 1).padStart(2, "0");
+    inners.forEach((inner, i) => {
+      if (!inner) return;
+      const fromCenter = centers[i] + currentX - window.innerWidth / 2;
+      inner.style.transform = `translateX(${-fromCenter * PARALLAX}px)`;
+    });
+  }
+
+  let gliding = false;
+  function glideWork() {
+    if (!pinned) {
+      gliding = false;
+      return;
+    }
+    const target = targetX();
+    currentX += (target - currentX) * GLIDE;
+    if (Math.abs(target - currentX) <= 0.1) currentX = target;
+    drawWork();
+    gliding = currentX !== target;
+    if (gliding) requestAnimationFrame(glideWork);
+  }
+
+  function snapWork() {
+    if (!pinned) return;
+    currentX = targetX();
+    drawWork();
+  }
+
+  layoutWork();
+  snapWork();
+
+  window.addEventListener("scroll", () => {
+    if (gliding) return;
+    gliding = true;
+    requestAnimationFrame(glideWork);
+  }, { passive: true });
+
+  window.addEventListener("resize", () => {
+    layoutWork();
+    snapWork();
+  });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      layoutWork();
+      snapWork();
+    });
+  }
+}
+
+/* ============================================
    DESIGN WORK — data-driven gallery
    Add a new object here to add a new project;
    the first entry in the array renders large.

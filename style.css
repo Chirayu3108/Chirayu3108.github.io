@@ -1079,55 +1079,189 @@ details[open] .service-plus::after { transform: rotate(90deg); }
 }
 
 /* =============================================
-   WORK
+   WORK — panels rendered from the projects array
+   in script.js. Default (narrow screens, reduced
+   motion): a vertical stack. With .is-pinned
+   (wide screens): the track pins and the rail
+   slides horizontally as you scroll.
    ============================================= */
-.work-list {
+.work-rail {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 110px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 60px;
 }
 
-.work-item {
+.work-panel {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 60px;
   align-items: center;
 }
 
-.work-item:nth-child(even) {
-  direction: rtl;
-}
-.work-item:nth-child(even) > * {
-  direction: ltr;
-}
-
-.work-visual {
-  aspect-ratio: 16 / 11;
-  border: 1px solid var(--line-light);
-  background: linear-gradient(135deg, var(--ink-alt), var(--ink));
+.work-track.is-pinned .work-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  position: relative;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.work-visual-mark {
-  font-family: var(--font-display);
-  font-size: clamp(80px, 10vw, 140px);
-  color: var(--line-light-strong);
-  letter-spacing: 0.04em;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+.work-track.is-pinned .work-rail {
+  flex-direction: row;
+  gap: 8vw;
+  width: max-content;
+  max-width: none;
+  margin: 0;
+  /* first panel lines up with the page's content edge */
+  padding: 0 max(60px, calc((100vw - 1180px) / 2 + 60px));
+  will-change: transform;
 }
 
-.work-item:hover .work-visual {
-  transform: scale(1.02);
+.work-track.is-pinned .work-panel {
+  width: min(1060px, 74vw);
+  flex-shrink: 0;
 }
 
-.work-item:hover .work-visual-mark {
-  transform: scale(1.06);
+/* Counter + progress bar along the bottom of the pinned screen */
+.work-hud {
+  display: none;
+}
+
+.work-track.is-pinned .work-hud {
+  position: absolute;
+  left: max(60px, calc((100vw - 1180px) / 2 + 60px));
+  right: max(60px, calc((100vw - 1180px) / 2 + 60px));
+  bottom: 7vh;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--bg-muted);
+}
+
+.work-count span:first-child {
   color: var(--gold);
+}
+
+.work-progress {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: var(--line-light);
+}
+
+.work-progress-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Visual: a looping motion graphic (drifting dot grid, dashed orbit rings
+   with glowing gold dots, outlined initials) unless the project has an image */
+.work-visual {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--line-light);
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(173, 143, 102, 0.1), transparent 60%),
+    var(--ink-alt);
+  transition: border-color 0.4s ease;
+}
+
+.work-panel:hover .work-visual {
+  border-color: var(--line-light-strong);
+}
+
+.work-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* oversized so the parallax shift (script.js) never shows an edge */
+.work-visual-inner {
+  position: absolute;
+  inset: -8%;
+  display: grid;
+  place-items: center;
+}
+
+.work-visual-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--line-light-strong) 1px, transparent 1.5px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  animation: gridDrift 6s linear infinite;
+}
+
+@keyframes gridDrift {
+  to { background-position: 24px 24px; }
+}
+
+.work-ring {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px dashed var(--line-light-strong);
+  /* --phase (set per project) starts each panel's dots at a different spot */
+  animation: ringSpin var(--dur) linear infinite;
+  animation-delay: calc(var(--phase, 0) * -5s);
+  transition: border-color 0.4s ease;
+}
+
+.work-ring:nth-child(1) { width: 30%; --dur: 14s; }
+.work-ring:nth-child(2) { width: 52%; --dur: 24s; animation-direction: reverse; }
+.work-ring:nth-child(3) { width: 76%; --dur: 40s; border-style: solid; border-color: var(--line-light); }
+
+.work-ring::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 14px var(--gold);
+}
+
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+
+.work-panel:hover .work-ring {
+  border-color: rgba(173, 143, 102, 0.55);
+}
+
+.work-mark {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: clamp(90px, 11vw, 170px);
+  letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-light-strong);
+  transition: color 0.4s ease, -webkit-text-stroke-color 0.4s ease;
+}
+
+.work-panel:hover .work-mark {
+  color: var(--gold);
+  -webkit-text-stroke-color: var(--gold);
 }
 
 .work-number {
@@ -1137,11 +1271,13 @@ details[open] .service-plus::after { transform: rotate(90deg); }
   letter-spacing: 0.05em;
 }
 
+/* wraps .title-mask > .title-pop, so it pops up when the panel is .in-view */
 .work-title {
   font-family: var(--font-display);
-  font-size: clamp(32px, 4vw, 52px);
+  font-size: clamp(36px, 4.4vw, 64px);
+  font-weight: 400;
   line-height: 1;
-  margin: 14px 0 18px;
+  margin: 14px 0 20px;
 }
 
 .work-tags {
@@ -1167,8 +1303,14 @@ details[open] .service-plus::after { transform: rotate(90deg); }
   font-weight: 300;
   color: var(--bg-soft);
   line-height: 1.85;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   max-width: 460px;
+}
+
+.work-meta {
+  display: flex;
+  align-items: center;
+  gap: 28px;
 }
 
 .work-period {
@@ -1491,6 +1633,11 @@ footer {
     animation: none;
   }
 
+  .work-visual-inner::before,
+  .work-ring {
+    animation: none;
+  }
+
   .about-word,
   .title-pop,
   .big-header .section-eyebrow,
@@ -1544,13 +1691,7 @@ footer {
    LARGE DESKTOP  ≤ 1200px
    ============================================= */
 @media (max-width: 1200px) {
-  .work-item {
-    grid-template-columns: 1fr;
-  }
-  .work-item:nth-child(even) {
-    direction: ltr;
-  }
-  .work-desc { max-width: none; }
+  .work-track.is-pinned .work-panel { width: 82vw; }
 }
 
 /* =============================================
@@ -1565,6 +1706,10 @@ footer {
   section { padding: 100px 0; }
 
   .about-grid { grid-template-columns: 1fr; gap: 40px; margin-bottom: 72px; }
+
+  .work-rail { padding: 0 40px; }
+  .work-panel { grid-template-columns: 1fr; gap: 32px; }
+  .work-desc { max-width: none; }
   .about-facts { grid-template-columns: 1fr 1fr; }
 
   .services-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -1630,7 +1775,7 @@ footer {
 
   .statement-inner { gap: 14px; }
 
-  .work-list { gap: 70px; }
+  .work-rail { gap: 70px; padding: 0 24px; }
 
   .contact .section-container { gap: 44px; }
 
@@ -1644,7 +1789,6 @@ footer {
 @media (max-width: 480px) {
   .btn-primary { font-size: 11px; padding: 11px 24px; }
 
-  .work-item { gap: 28px; }
   .work-tags span { font-size: 9px; padding: 4px 10px; }
 
   .contact-links { flex-wrap: wrap; gap: 16px; }

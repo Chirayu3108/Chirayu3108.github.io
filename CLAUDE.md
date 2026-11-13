@@ -39,14 +39,14 @@ Editorial, dark, typography-led — inspired by dzinrstudio.com's pacing/hierarc
 3. **About** (`#about`) — `.big-header` "About" title, then two-column: big serif lead (gold italic `<em>` accent, revealed word by word — script.js splits it into `.about-word` spans) beside the bio; then a 4-item `.about-facts` row (hairline top, gold line draws on hover)
 4. **Services** (`#services` on `.services-intro`: `.big-header` "Services" + Let's Talk `.big-cta`; then `.services` holds the cards) — 4 cards in a row (Font Awesome icon on top, gold), 2-col ≤992px, 1-col ≤480px. Above 992px the section pins (`.services-track` > sticky `.services-pin`) and each `[data-scroll-card]` card is scroll-driven (staggered by `STAGGER`): rises from below, floats up and back, exits off the top; cards glide (lerp) toward their scroll target
 5. **Statement** — centered "Code + Design = Experience" typographic break
-6. **Work** (`#work`) — 3 real software projects as large numbered editorial blocks with a placeholder visual (`.work-visual`) swappable for a real screenshot later
+6. **Work** (`#work`) — `.big-header` "Projects", then panels rendered from the `projects` array in `script.js` (add an object to add a project; optional `link`, and `image` to replace the motion graphic). Each panel's default visual is a CSS motion graphic (drifting dot grid, dashed orbit rings with gold dots, outlined initials that fill gold on hover). Above 992px `.work-track` pins and `.work-rail` slides horizontally on scroll (glide/lerp, visuals parallax, counter + gold progress bar in `.work-hud`); otherwise panels stack vertically
 7. **Design Work** (`#design`) — rendered from the `designWork` array in `script.js`; add an object to add a project, first item renders large
 8. **Experience** (`#experience`) — `<details>` expand-on-click list, 1 entry (The Phoenix News)
 9. **Contact** (`#contact`) — big statement + prominent email, mailto form kept but visually secondary
 10. **Footer** — identity + icon links + back-to-top
 
 ## Responsive Breakpoints
-- `≤ 1200px` — work items collapse to a single column
+- `≤ 1200px` — pinned work panels widen to 82vw
 - `≤ 992px` — about grid stacks, about facts go 2-col, design gallery goes 1-col, contact grid goes single-column
 - `≤ 768px` — hamburger nav replaces link row, section padding/font reductions, scroll cue hidden
 - `≤ 480px` — smallest font/padding sizes
@@ -55,7 +55,7 @@ Editorial, dark, typography-led — inspired by dzinrstudio.com's pacing/hierarc
 - **Reveal system:** one shared `IntersectionObserver` watches every `.reveal` element (added to section headers, cards, etc.) and adds `.in-view` at 15% threshold — do not create a second observer for new sections, just add the `.reveal` class
 - **Nav:** scroll listener toggles `.scrolled` on `#site-header`; a second observer (`rootMargin: "-45% 0px -45% 0px"`) tracks which `[data-nav]` section is centered and toggles `.active` on the matching nav link
 - **Hamburger menu:** toggles `.open` on `#hamburger`/`#nav-links`, closes on outside click or nav link click
-- **Design Work:** rendered client-side from the `designWork` array at the top of `script.js` — this is the one place content and rendering are separated; everything else is static HTML
+- **Projects / Design Work:** rendered client-side from the `projects` and `designWork` arrays in `script.js` — the places content and rendering are separated; everything else is static HTML
 - **Contact form:** `submit` opens a `mailto:` link pre-filled with name/email/message (no backend)
 
 ## Key Conventions
